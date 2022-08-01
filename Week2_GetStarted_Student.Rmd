@@ -33,8 +33,7 @@ R markdowns are great for reproducibility, as we can explain and document our wo
 codes, and outputs. R markdowns can be knitted into html files which are 
 easier to follow compared to an R script (e.g., `Week2_GetStarted.R`).
 
-Use the `.Rmd` files during the workshops to follow along and practise coding, and read `.html` files 
-independently in your own time.
+Use the `.Rmd` files during the workshops to follow along and practise coding, and read `.html` files independently in your own time.
 
 # Operators
 R's operators are similar to a calculator and other programming languages.
@@ -357,7 +356,6 @@ install.packages("car")
 install.packages("ggplot2")
 install.packages("JWileymisc")
 install.packages("extraoperators")
-install.packages("ggplot")
 ```
 
 You only need to install packages once, unless you delete and re-install R.
@@ -376,7 +374,6 @@ library(car)
 library(ggplot2)
 library(JWileymisc)
 library(extraoperators)
-library(ggplot2)
 ```
 
 # Save your work in R

@@ -9,4 +9,4 @@ This GitHub repository stores all the resources for the workshops, including HTM
   Getting `R` installed, setup, and learning a few basics from the Honours Workshop. 
 
 - **Week 2** *Working with Data 1*.
-  Please see the [Content](Week2_WorkData.html).
+  Please see the [Content](Week2_GetStarted.html).

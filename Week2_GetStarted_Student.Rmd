@@ -131,7 +131,7 @@ y <- c(1L, 2L, 3L)
 `z` is logical vector
 
 ```{r logical}
-z <- c("TRUE", "TRUE", "FALSE", "FALSE")
+z <- c(TRUE, TRUE, FALSE, FALSE)
 ```
 
 `w` is character vector
@@ -165,8 +165,8 @@ Create a new variable call `j` and assign 5 numbers to it.
 Missing values in R are denoted by `NA` and/or `NaN`.
 
 ```{r na}
-x <- c(1, 2, NA, 4, 5)
-is.na(x)
+l <- c(1, 2, NA, 4, 5)
+is.na(l)
 ```
 
 ## Data frames
@@ -176,7 +176,7 @@ Let's explore dataset `mtcars`, which is a built in dataset in R.
 Here is the code to load it in our R environment.
 
 ```{r dataframe1}
-data("mtcars")
+data(mtcars)
 ```
 
 Check what type `mtcars` is. You can see that it is a data frame.
@@ -255,14 +255,14 @@ There can be one or multiple arguments within a function, and they are separated
 round(1.214294254)
 
 # The same function that rounds a number
-# but with an additional argument telling it we want 2 decimal points
+# but with an additional argument telling it we want 2 digits
 round(1.214294254, digits = 2)
 ```
 
 **Exercise**
 
 1. Calculate the sum of the `j` variable you created previously.
-2. Can you calculate the sum of `x` variable too? What do you get?
+2. Can you calculate the sum of `l` variable too? What do you get?
 
 ```{r}
 

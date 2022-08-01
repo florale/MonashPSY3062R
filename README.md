@@ -1,6 +1,6 @@
 # Monash PSY3062 R Workshop
 
-This series of workshop hands on lesson about making use of `R`, a programming language and environment for statistics. Over the semester, you will learn some basics of `R` programming 
+This series of workshop hands on lesson about making use of `R`, a programming language and environment for statistics and data sciences. Over the semester, you will learn some basics of `R` programming 
 and learning to do analyses in `R`.
 
 This GitHub repository stores all the resources for the unit, including HTML, R Markdown, and R scripts. You can download your weekly materials from here or Moodle.

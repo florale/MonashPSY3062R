@@ -1,0 +1,412 @@
+---
+title: "Week 2 - Getting Started"
+author: "Your Name"
+date: "`r Sys.Date()`"
+output: 
+  html_document:
+    theme: sandstone
+    highlight: zenburn
+    css: "florastheme.css"
+    toc: yes
+    toc_float: yes
+    collapsed: no
+    smooth_scroll: no
+    toc_depth: 4
+    fig_width: 6
+    fig_height: 4.5
+    fig_caption: yes
+    number_sections: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(kableExtra)
+library(datasets)
+
+options(digits = 2)
+```
+
+# Intro
+
+This week we learn about some basic, but important features in R. This is a R markdown (.Rmd). 
+R markdowns are great for reproducibility, as we can explain and document our work using notes, comments, 
+codes, and outputs. R markdowns can be knitted into html files which are 
+easier to follow compared to an R script (e.g., `Week2_GetStarted.R`).
+
+Use the `.Rmd` files during the workshops to follow along and practise coding, and read `.html` files 
+independently in your own time.
+
+# Operators
+R's operators are similar to a calculator and other programming languages.
+
+## Arithmetic Operators
+
+```{r}
+1+1 # sum
+1-1 # subtraction
+2*2 # multiplication
+2/2 # division
+2^2 # power
+```
+
+## Logical Operators
+
+```{r operators2}
+2*2 == 2*3 # equal
+2*2 != 2*3 # not equal
+2*2 > 2*4 # larger
+2*2 < 2*4 # smaller
+2*2 <= 2*4 # smaller or equal to
+2*2 >= 2*4 # larger or equal to
+``` 
+
+**Do You Know**
+
+You might have noticed that we used `==` to check whether two operands are equal. Why not `=`? 
+In R and many programming languages, `=` is an assignment. Specifically in R, 
+`=` works similarly to `<-`. They both assign the right operand to the left operand. 
+
+**You Try It**
+
+Check whether the product of 13 and 3 is larger than the product of 29 and 2.
+
+```{r}
+
+```
+
+# Data types
+`R` has 5 basic atomic classes:
+
+ * logical, e.g., TRUE, FALSE
+ * integer, e.g., 1L, 2L
+ * number/real/numeric, e.g., 2 or 2.2
+ * character/string/text, e.g.,"a", "b"
+ * complex, e.g, 1 + 2i
+
+We can check what data it is, using `typeof()` or `class()` function.
+
+```{r datatype}
+typeof(1L)
+typeof("PSY3062")
+```
+
+# Data structures
+## Variables 
+Everything in `R` is an object. We create new object by assigning a value using "<-" operator.
+Therefore, a `variable` is also an object. When you create an object, the object will appear in 
+the environment pane of RStudio (the top right one). We can also perform a task on an object by referring to it by name.
+
+**Tips** 
+
+Every time you create an object, check the environment pane to make sure that it has been successful.
+
+```{r vars}
+myclass <- "PSY3062"
+myclass
+```
+
+**You Try It**
+
+Can you see `myclass` in your environment? Check what data type `myclass` is.
+
+```{r }
+
+```
+
+## Vectors
+Vector is the most common data structure in `R`.
+We create vectors using the `c()` function. You can think of it as "combine".
+
+`x` is a numeric vector
+
+```{r vectors1}
+x <- c(13, 22, 3)
+```
+
+`y` is a integer vector
+
+```{r integer}
+y <- c(1L, 2L, 3L)
+```
+
+`z` is logical vector
+
+```{r logical}
+z <- c("TRUE", "TRUE", "FALSE", "FALSE")
+```
+
+`w` is character vector
+
+```{r character}
+w <- c("Monica", "Rachel", "Phoebe", "Chandler", "Joey", "Ross")
+```
+
+Examine your vector
+
+```{r vectors2}
+typeof(w)
+class(w)
+```
+
+You can create vectors as sequence of numbers.
+
+```{r seqvector}
+series <- c(1:10)
+series
+```
+
+**You Try It**
+
+Create a new variable call `j` and assign 5 numbers to it.
+
+```{r}
+
+```
+
+Missing values in R are denoted by `NA` and/or `NaN`.
+
+```{r na}
+x <- c(1, 2, NA, 4, 5)
+is.na(x)
+```
+
+## Data frames
+A data frame is a very important data structure in R. It is the default data structure in R and is commonly use for statistics.
+
+Let's explore dataset `mtcars`, which is a built in dataset in R. 
+Here is the code to load it in our R environment.
+
+```{r dataframe1}
+data("mtcars")
+```
+
+Check what type `mtcars` is. You can see that it is a data frame.
+
+```{r dataframe2}
+class(mtcars)
+```
+There are several useful functions to explore a data frame.
+
+* `head()` - see first 5 rows
+* `tail()` - see last 5 rows
+* `nrow()` - number of rows
+* `ncol()` - number of columns
+* `str()` - display the internal structure of an R object
+* `names()` - list the column names
+
+**You Try It**
+
+Explore `mtcars` using the above functions.
+
+ 1. How many rows does it have?
+ 2. How many columns?
+
+```{r}
+
+```
+
+## Loading data in R
+Most of the time we work with a dataset that is our own and not built in R. That means we have to 
+load them into R environment.
+
+**Let's load your research report dataset in R.** Recall that everything in R is a object, so is a 
+dataset. Therefore, we create a dataset in R using `<-` operator. 
+
+Steps:
+
+ * Call your dataset by a name. Here I call it `d`
+ * Call `read.csv()` function to read in a .csv file
+ * Within the `read.csv()`, specify the file path to your dataset as a "character string"
+ * Run code and check if `d` is in your environment
+ 
+ How to get file path:
+ 
+ * On Macs, right click the file > press and hold the Option key > select "Copy as path"
+ * On Windows, right click the file > select "Copy as path" **OR** 
+ visit this link https://youtu.be/MVoQhYWJuvw for instructions
+
+Your dataset `d` should appear in the environment panel.
+
+```{r}
+# example for Macs
+d <- read.csv("/Users/florale/Library/CloudStorage/OneDrive-MonashUniversity/Work/MonashTA/2022_PSY3062/PSY3062 dataset.csv")
+
+# example for Windows
+#d <- read.csv("C:/Users/florale/Downloads/PSY3062 dataset.csv")
+
+## check class
+class(d)
+```
+
+# Functions
+Function is a key feature in `R`. Functions usually take in some sort of data structure 
+(value, vector, dataframe etc.), perform a specific task, and return a result. 
+We call function in R by their name followed by parentheses `function_name(input)`
+For example,
+
+* `class()` checks what type an object is
+* `sum()` calculates the sum of vector elements
+* `mean()` calculates the mean of vector elements
+
+The inputs, called *arguments* or *parameters*, are information passed to a function.
+There can be one or multiple arguments within a function, and they are separated by a comma. 
+
+```{r}
+# This function rounds a number
+round(1.214294254)
+
+# The same function that rounds a number
+# but with an additional argument telling it we want 2 decimal points
+round(1.214294254, digits = 2)
+```
+
+**Exercise**
+
+1. Calculate the sum of the `j` variable you created previously.
+2. Can you calculate the sum of `x` variable too? What do you get?
+
+```{r}
+
+```
+
+There are also functions that don't require any arguments.
+
+```{r}
+getwd()
+```
+
+We can also create our own function using the `function()` function. 
+
+The below function, `f1()` takes an argument `name`, add it to
+a pre specified character string `is my favourite programming language`, 
+and return a concatenated string. 
+
+```{r}
+f1 <- function(name) {
+  paste(name, "is my favourite programming language")
+}
+f1("R")
+```
+
+**You Try It**
+
+Use `f1()` to print "Python is my favourite programming language".
+
+```{r}
+
+
+```
+
+Let's create another function that sum two numbers. 
+We will call it `f2()`.
+
+```{r}
+f2 <- function (x, y) {
+  x + y
+}
+
+f2(13, 29)
+```
+
+**You Try It**
+
+Use `f2()` to sum 89 and 9. What do you get?
+
+```{r}
+
+
+```
+
+You can see that this function works like the `sum()` function.
+
+```{r}
+f2(89, 9)
+sum(89, 9)
+```
+
+When you are not sure about an function's usage, ask `R` using `??`.
+
+```{r}
+??sum
+```
+
+I also suggest googling function usage. 
+I do this all the time. `R` and most packages in `R` have documentations that explain what a 
+function does and how to specify it. 
+For example, https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/paste 
+explains how to specify the `paste()` function that I just used in `f1()`. 
+Google is your best friend when it comes to coding. 
+`R` is used by a massive community. There's a good chance that whatever 
+issues you run into, someone has been there, done that, and had a solution to it.
+
+Also, most of the time we don't have to write our own functions.
+There are amazing developers writing functions and putting them in packages that are freely 
+available for us to use in `R`. They make our lives easier. Let's talk packages in the next section.
+
+# Packages
+`R` and `RStudio` are like phones. Packages are like apps on our phones. Just like how we download
+apps from App Store or Google Play Store, we install packages to use in `R`. Packages contain 
+functions that do a lot of hard work for us.
+
+Here are some very helpful packages that we will use throughout this semester. We first need to install them.
+
+```{r, eval=FALSE}
+install.packages("data.table")
+install.packages("psych")
+install.packages("car")
+install.packages("ggplot2")
+install.packages("JWileymisc")
+install.packages("extraoperators")
+install.packages("ggplot")
+```
+
+You only need to install packages once, unless you delete and re-install R.
+These packages are stored somewhere in your computer. 
+You need to load them to R every time you open R. 
+We will explore functions from these packages in later weeks.
+
+**Tips** 
+
+Every time you open a R script/ R markdown, load the packages using the `library()` function.
+
+```{r, message=FALSE}
+library(data.table)
+library(psych)
+library(car)
+library(ggplot2)
+library(JWileymisc)
+library(extraoperators)
+library(ggplot2)
+```
+
+# Save your work in R
+
+This is no brainer, but remember to save your work using CTRL + S or Cmd + S.
+
+# Exercises
+
+Use functions you learnt today to explore the PSY3062 research report dataset.
+
+1. What is the structure of this dataset? How many rows/columns are there? 
+2. How many participants were included in this study/dataset?
+3. How many variables are in there?
+
+```{r}
+
+```
+
+# Extra materials for R and coding
+## DataCamp
+DataCamp is an interactive learning platform for many programming languages, including R. 
+I will add you to the PSY3062 team on DataCamp. 
+Michelle and I will add new chapters/exercises that you can practise coding in your own time. 
+If you are interested in learning a particular aspect of R or an analysis, 
+let me know and I will try to find a chapter for you to practise.
+
+## GitHub
+GitHub is a code hosting platform and lets us share our work for transparency.
+I store all of our materials on Github, here https://github.com/florale/MonashPSY3062R. 
+On GitHub, you will be able to see all changes/updates I make to our workshop materials. 
+You can download the materials from Moodle or Github. 
+We won't cover Github in PSY3062, and you will work with Github more in Honours.
+If you are keen to learn, feel free to chat with me about it.

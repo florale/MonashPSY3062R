@@ -10,5 +10,5 @@ This GitHub repository stores all the resources for the workshops, including HTM
 - **Week 2** *Getting Started in `R`*.
   Please see the [Content](Week2_GetStarted.html).
   
-  - **Week 3** *Working with Data and Scoring `R`*.
+- **Week 3** *Working with Data and Scoring `R`*.
   Please see the [Content](Week3_WorkDataScoring.html).

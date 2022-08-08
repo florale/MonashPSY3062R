@@ -1,0 +1,492 @@
+---
+title: "Week 3 - Working with Data 1 and Scoring"
+author: "Your Name"
+date: "`r Sys.Date()`"
+output: 
+  html_document:
+    theme: sandstone
+    highlight: zenburn
+    css: "florastheme.css"
+    toc: yes
+    toc_float: yes
+    collapsed: no
+    smooth_scroll: no
+    toc_depth: 4
+    fig_width: 6
+    fig_height: 4.5
+    fig_caption: yes
+    number_sections: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(datasets)
+
+options(digits = 2)
+
+```
+
+# Intro
+
+This week we talk about how to work with data in data table and score data in `R`. 
+As a brief refresher, data frame is the default structure in 
+R. `data.table `is an enhanced version of data frame. 
+A big advantage of `data.table` is how fast it is, especially with large datasets. 
+In this workshop, we will use `data.table` to manage our data using the `data.table` package.
+
+
+# Starting your R project
+When working on a project, we likely create many files for different purposes. For example, 
+throughout this series of workshops, we have multiple HTML files, R Markdowns and R Scripts. 
+We can manage our files conveniently through `R` Project in RStudio. 
+
+Let's create a R project for the PSY3062 unit. You can save files from the workshops and 
+your analysis for the research report in this folder.
+
+Steps to create a `R` project:
+
+* From the menu bar, select `File > New Project...`.
+* Select `New Directory` from the popup window.
+* Select `New Project`.
+* Pick a name for your project.
+* Click `Create Project`.
+* Move all R files related to PSY3062 to this folder.
+
+For more detailed instructions, visit https://bookdown.org/daniel_dauber_io/r4np_book/starting-your-r-projects.html.
+
+**Tips** 
+
+Always open `R` project everytime you open `R` Studio. You can do this clicking the .Rproj file in 
+`R` Studio. This will let RStudio set the working directory, where all of the files you work on are saved to.
+
+# Packages
+
+We are going to start with loading a few of the packages that you
+should have already installed from Week 2.
+
+```{r pkg, message=FALSE}
+library(data.table)
+library(psych)
+library(car)
+library(ggplot2)
+library(JWileymisc)
+library(extraoperators)
+```
+
+**Tips** 
+
+* If you encounter trouble installing packages, try the following code: 
+`install.packages("XXX", dependencies= TRUE)`.
+* If you receive an error saying `Error in library(XXX) : there is no package called ‘XXX’`, it means 
+you have not installed the package. Running `install.packages("XXX")` then `library(XXX)` should 
+fix the problem.
+
+# Loading dataset as data table
+
+We can create a data table when loading a dataset in R in 2 ways:
+
+1.
+
+* read dataset as usual using `read.csv()` function.
+* use `as.data.table()` function to make it a data table.
+
+2. use `fread()` function (fast read)
+
+Let's load the dataset we use for *week 3 tutorial*.
+
+```{r data}
+d0 <- as.data.table(read.csv("Put your file path to the perceived control csv file here"))
+d <- fread("Put your file path to the perceived control csv file here")
+```
+
+These methods both work well. However, `fread()` is more speedy, which is helpful when you have a 
+large dataset. We can check whether `d` and `d0` are the same dataset using the `identical()` function.
+
+```{r checkd}
+identical(d, d0)
+```
+
+Let's quickly inspect `d`. You can also view by clicking on `d` in your environment pane
+
+```{r checkd1, eval=FALSE}
+head(d)
+```
+
+# Working with Data using data.table
+## Data table syntax
+
+In data table, we write our code inside `[...]`. The syntax of data table is `DT[i, j, by]`,
+which means subset/reorder rows using `i`, then calculate `j`, grouped by `by`.
+
+* `DT` : name of your data object.
+* `i` : where you specify the row (i.e., observations, participants) that you want to consider.
+* `j` : what to do with the column (i.e., variables), such as creating or modifying.
+* `by` : would you like the task to happen within a group. For example, you might like to perform 
+   an function only with females/males.
+
+## Creating a new variable
+Columns can be referred to as if they are variables. This means creating a variable is done in `j`. 
+In `data.table`, we use a special symbol `:=` for assignment within the `[...]`.
+
+For example, we want to make a new variable `NewVar` that assign the same value of 1 to all participants. 
+As this variable applies to all participant, `i` is left blank.
+ 
+```{r create}
+d[ , NewVar := 1]
+```
+
+**Tips** 
+
+If you receive an error saying `Error in `:=`(NewVar, 1) : could not find function ":="`, that means
+you don't have the package that has the function ":=". This function is from the `data.table` package,
+so you need to load it using the `library()` function.
+
+**You Try It**
+
+Create a new variable in `d`, call it `Class`, and assign `PSY3062` to it.
+
+```{r}
+
+
+```
+
+## Dropping/Deleting variable
+
+When we want to delete variables, we assign `NULL` to it. Here is the code to drop variable `NewVar` 
+from `d`:
+
+```{r drop}
+d[, NewVar := NULL]
+```
+
+**You Try It**
+
+Drop the `Class` variable.
+
+```{r}
+
+
+```
+
+# Subsetting dataset
+Subsetting is a useful feature in `R` that can be used to select or filter observations/participants 
+and variables. Subsetting can be performed using both rows (represented by `i`) and columns (represented by `j`). 
+For example, you can subset the PSY3062 dataset to keep only female participants (subsetting by rows) 
+or the three variables that you're using for your research project (subsetting by columns).
+
+## Subsetting rows in `i`
+Get the first row from `d`. Key word here is row. 
+We need to provide `i` with the row index that we are after. 
+This returns a data table d with all columns at the first row.
+
+```{r subset, eval=FALSE}
+d[1, ]
+```
+
+**You Try It**
+
+Subset the first 10 rows from `d`. Remember that we are asking for multiple rows. When there are 
+multiple values, we use the `c()` function to make it a vector, e.g., `c(1, 2)` not `1, 2`. 
+We can also create sequence of numbers using `:`.
+
+```{r}
+
+```
+
+## Subsetting columns in `j`
+Get the first column from `d`. Because we are selecting columns, we provide `j` with the column 
+indices that we are after.
+
+```{r, eval=FALSE}
+d[ , 1]
+```
+
+**You Try It**
+
+Subset columns 1, 2, 3, 8, 9 from `d`.
+
+```{r}
+
+```
+
+## Subsetting data by variable names
+We can also subset using the names of the variables. For example, we only want variable `pc1` and `pc2`.
+This is helpful when we know the variable names, but we don't know which column indices they are.
+
+```{r, eval=FALSE}
+d[, .(pc1, pc2)]
+```
+
+## Create a sub dataset
+
+We can create a new dataset with our chosen variables just like how we create any objects in `R`.
+
+```{r}
+d1 <- d[, .(pc1, pc2)]
+```
+
+# Missing data
+## Checking for missing data
+We can check for missing data using the `is.na()` function.
+
+This shows us where pc1 has missing data. We are performing this task in the first section of the
+squared brackets `i`, which means that we are subsetting rows .
+
+```{r missing, eval=FALSE}
+d[is.na(pc1)]
+```
+
+## Removing missing data
+We can subset `d` to include only rows that don't have missing data in `pc1`. 
+To do this, we add `!` before `is.na()`. `!` means NOT. Here, we make a new dataset `d3` that only 
+includes rows that don't have missing data on `pc1`.
+
+```{r}
+d2 <- d[!is.na(pc1)]
+```
+
+**Exercise**
+
+How many rows do `d`, `d1`, and `d2` have? How many rows have missing data on `pc1`?
+
+Alternatively, you can use the `complete.cases()` function to find rows that don't have missing data.
+
+```{r}
+d3 <- d[complete.cases(pc1)]
+```
+
+`complete.cases()` and `!is.na()` work similarly in this example. We can confirm this by checking if 
+`d3` and `d4` are identical using `identical()` function.
+
+```{r}
+identical(d2, d3)
+```
+
+We can also perform this on the entire dataset, rather than just only `pc1`.
+
+```{r}
+d4 <- d[complete.cases(d)]
+```
+
+# Scoring and Reliability
+
+When we work with our own data, often we have to score our variables from the individual item scores. 
+Scales/subscales in psychology are usually scored by summing or taking the average.
+
+**Tips**
+
+Always refer to the codebook and instructions for scoring. They have information about the scale, 
+reverse scoring that are crucial for computing the correct sum or average score.
+
+## Reverse scoring
+We often have to reverse some items before computing the sum or average. You learnt about 
+reverse scoring in last week's tutorial. We are going to subtract the items that require reverse 
+scoring from `6`.
+
+**Exercise**
+
+1. Why `6`?
+2. What items need to be reversed?
+
+```{r revscore}
+d[ , pc3 := 6 - pc3]
+```
+
+## Average score
+
+We calculate average scores using the `rowMeans()` function (take the mean for a row of data).
+
+* `.SD` is a special symbol of `data.table`. It refers to a **S**ubset of **d**ata.table. Its job is to 
+  hold the data for the a particular group defined by us.
+* `na.rm` stands for **R**e**m**ove missing data (**NA**). In this case, it asks `R` to remove missing 
+  data when calculating the mean.
+* `.SDcols` specifies the columns of the `data.table` that are included in `.SD`.
+
+```{r mean}
+d[ , pc_mean := rowMeans(.SD, na.rm = TRUE),
+                         .SDcols = c("pc1", "pc2", "pc3")]
+```
+
+**You Try It**
+
+Calculate the average of all variables.
+
+```{r}
+
+
+```
+
+## Total score
+
+There are two ways to calculate the total score:
+
+* The simplest approach is literally adding items using `+`. This works fine if there is no 
+  missing data. However, if a participant has missing data on *any* of the items, R will return 
+  missing value `NA` for the total score for this participant.
+  Recall when this happened to us trying to calculating the sum of 
+  the `x` vector that contains a missing value last week.
+* Another approach is using `rowMeans()` function. We use `rowMeans()` to get an average score. 
+  We then get back to the "sum" scale by multiple the result to the number of items 
+  (e.g., 10 if a scale has 10 items). This works well if we have missing value on a small number of 
+  items, as we can keep participants with small amount of missing data. This doesn't work if the 
+  participants have missing data on all items (obviously).
+
+```{r total}
+# add items
+d[, pc_total := pc1 + pc2 + pc3]
+
+# create a total score using rowMeans
+d[, pc_total := rowMeans(.SD, na.rm = TRUE) * 3,
+                         .SDcols = c("pc1", "pc2", "pc3")]
+```
+
+**You Try It**
+
+Calculate the sum of all `pc` variables.
+
+```{r}
+
+
+```
+
+## Reliability
+Reliability is assessed using Cronbach's alpha. Cronbach's alpha is calculated from the individual 
+items, not the total nor mean.
+
+```{r alpha}
+## calculate Cronbach's alpha
+psych::alpha(as.data.frame(d[, .(pc1, pc2, pc3)]))
+```
+
+**You Try It**
+
+Calculate Cronbach's alpha for the this scale. Pay attention to the warning. 
+
+Let's run this again using the `check.keys = TRUE` option. This option tells `alpha()` function to 
+automatically reverse items when calculating Cronbach's alpha.
+
+```{r}
+psych::alpha(as.data.frame(d[, .(pc1, pc2, pc3, pc4, pc5, pc6, pc7, pc8, pc9, pc10,
+                                 pc11, pc12, pc13, pc14, pc15, pc16, pc17, pc18)]), check.keys = TRUE)
+```
+
+**Interpreting R Output**
+
+You can see that R gives us several outputs. You can learn about interpreting these results by running 
+this code `?alpha`. The most helpful output here is the `raw_alpha`. It tells you about the Cronbach's alpha, 
+which is `r psych::alpha(as.data.frame(d[, .(pc1, pc2, pc3, pc4, pc5, pc6, pc7, pc8, pc9, pc10, pc11, pc12, pc13, pc14, pc15, pc16, pc17, pc18)]), check.keys = TRUE)$total$raw_alpha`. 
+
+*What does this value indicate? Does this scale has good reliability?*
+
+```{r}
+# run ?alpha below if interested
+
+```
+
+## T-Score
+
+T Scores are calculated via the scoring conversion tables. 
+
+Let's first load the dataset for  *week 3 tutorial*, which contains variables that require 
+converting to T-scores.
+
+```{r tscore}
+d_tscore <- fread("put your file patht to the t-score csv file here")
+```
+
+### Step 1 - Calculate raw/total score
+
+We first need the total score. Here is the code to calculate the total scores for only 3 items.
+Your code should include all items of the scale.
+
+```{r}
+d_tscore[, SS_COMP_Total := rowMeans(.SD, na.rm = TRUE) * 3,
+                                     .SDcols = c("SS_COMP_1", "SS_COMP_2", "SS_COMP_3")]
+```
+
+### Step 2 - Convert to T-score
+
+**Conversion chart** : https://www.healthmeasures.net/images/promis/manuals/PROMIS_Companionship_Scoring_Manual.pdf
+
+This task is similar to assigning values to a new variable. Here we match values of our raw scores to 
+the corresponding T-scores to create a new T-score variable. The code formula is below:
+
+```{r}
+# Create the a vector of scale (T-)scores using the conversion chart
+T_score <- c(25.2, 29.5, 31.8, 33.8, 35.5, 37.3, 
+             39.1, 40.8, 42.5, 44.3, 46.2, 48.1, 
+             50.0, 52.1, 54.3, 56.9, 63.1)
+
+# Create a vector of raw scores
+# If applicable, use a sequence of numbers
+Raw_score <- 4:20
+
+# Convert to t-score
+d_tscore[, SS_COMP_TScore := T_score[match(SS_COMP_Total, Raw_score)]]
+```
+
+Check your data after recoding using the `View(d_tscore)` function.
+
+**You Try It**
+
+In this week tutorial, calculate the T-score of the entire scale.
+
+```{r}
+
+
+```
+
+# Exercises - Data management for your research project
+## Task 1 - Loading data
+
+Write the code that loads your research report dataset in the code chunk below.
+
+**Hints**
+
+Revisit `Loading data in R` section of our Week 2 workshop for instructions.
+
+```{r}
+
+```
+
+## Task 2 - Subsetting your variables
+Create a new dataset by subsetting only the variables you plan to use for your research report.
+
+**Hints**
+
+Revisit `Subsetting columns` section in this week workshop for instructions. You might like to specify 
+the columns/variables using their names rather than the column indices.
+
+```{r}
+
+```
+
+## Task 3 - Removing missing data
+
+Create a new dataset that removes missing data from your research report dataset in the code chunk below.
+
+**Hints**
+
+Use either `!is.na()` or `complete.cases()` function. Always inspect your dataset after running the 
+code to make sure it works as intended.
+
+```{r}
+
+```
+
+## Task 4 - Scoring
+Score the variables you have chosen for your research report. This should include reverse scoring and 
+computing the final score by either summing or averaging individual items.
+
+```{r}
+
+```
+
+## Task 5 - Reliability
+Calculate the Cronbach's alpha for the scales you have chosen. Do your scales have good reliability?
+
+```{r}
+
+```
+
+

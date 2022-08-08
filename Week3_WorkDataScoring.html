@@ -11,7 +11,7 @@
 
 <meta name="author" content="Flora Le (flora.le@monash.edu)" />
 
-<meta name="date" content="2022-08-01" />
+<meta name="date" content="2022-08-08" />
 
 <title>Week 3 - Working with Data 1 and Scoring</title>
 
@@ -1815,7 +1815,7 @@ div.tocify {
 <h1 class="title toc-ignore">Week 3 - Working with Data 1 and
 Scoring</h1>
 <h4 class="author">Flora Le (<a href="mailto:flora.le@monash.edu" class="email">flora.le@monash.edu</a>)</h4>
-<h4 class="date">2022-08-01</h4>
+<h4 class="date">2022-08-08</h4>
 
 </div>
 
@@ -1832,8 +1832,37 @@ especially with large datasets. In this workshop, we will use
 <code>data.table</code> package.</p>
 </div>
 </div>
-<div id="packages" class="section level1" number="2">
-<h1><span class="header-section-number">2</span> Packages</h1>
+<div id="starting-your-r-project" class="section level1" number="2">
+<h1><span class="header-section-number">2</span> Starting your R
+project</h1>
+<p>When working on a project, we likely create many files for different
+purposes. For example, throughout this series of workshops, we have
+multiple HTML files, R Markdowns and R Scripts. We can manage our files
+conveniently through <code>R</code> Project in RStudio.</p>
+<p>Let’s create a R project for the PSY3062 unit. You can save files
+from the workshops and your analysis for the research report in this
+folder.</p>
+<p>Steps to create a <code>R</code> project:</p>
+<ul>
+<li>From the menu bar, select
+<code>File &gt; New Project...</code>.</li>
+<li>Select <code>New Directory</code> from the popup window.</li>
+<li>Select <code>New Project</code>.</li>
+<li>Pick a name for your project.</li>
+<li>Click <code>Create Project</code>.</li>
+<li>Move all R files related to PSY3062 to this folder.</li>
+</ul>
+<p>For more detailed instructions, visit <a href="https://bookdown.org/daniel_dauber_io/r4np_book/starting-your-r-projects.html" class="uri">https://bookdown.org/daniel_dauber_io/r4np_book/starting-your-r-projects.html</a>.</p>
+<div class="sand">
+<p><strong>Tips</strong></p>
+<p>Always open <code>R</code> project everytime you open <code>R</code>
+Studio. You can do this clicking the .Rproj file in <code>R</code>
+Studio. This will let RStudio set the working directory, where all of
+the files you work on are saved to.</p>
+</div>
+</div>
+<div id="packages" class="section level1" number="3">
+<h1><span class="header-section-number">3</span> Packages</h1>
 <p>We are going to start with loading a few of the packages that you
 should have already installed from Week 2.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(data.table)</span>
@@ -1855,22 +1884,22 @@ should fix the problem.</li>
 </ul>
 </div>
 </div>
-<div id="loading-dataset-as-data-table" class="section level1" number="3">
-<h1><span class="header-section-number">3</span> Loading dataset as data
+<div id="loading-dataset-as-data-table" class="section level1" number="4">
+<h1><span class="header-section-number">4</span> Loading dataset as data
 table</h1>
 <p>We can create a data table when loading a dataset in R in 2 ways:</p>
 <ol style="list-style-type: decimal">
 <li></li>
 </ol>
 <ul>
-<li>read dataset as usual using <code>read.csv()</code> function</li>
+<li>read dataset as usual using <code>read.csv()</code> function.</li>
 <li>use <code>as.data.table()</code> function to make it a data
 table.</li>
 </ul>
 <ol start="2" style="list-style-type: decimal">
 <li>use <code>fread()</code> function (fast read)</li>
 </ol>
-<p>Let’s read in the dataset we use for this week’s tutorial.</p>
+<p>Let’s load the dataset we use for <em>week 3 tutorial</em>.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>d0 <span class="ot">&lt;-</span> <span class="fu">as.data.table</span>(<span class="fu">read.csv</span>(<span class="st">&quot;~/Library/CloudStorage/OneDrive-MonashUniversity/Work/MonashTA/2022_PSY3062/Tutorial 2022/Tutorial 3/Tutorial 3 - Perceived Control of Internal States.csv&quot;</span>))</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">fread</span>(<span class="st">&quot;~/Library/CloudStorage/OneDrive-MonashUniversity/Work/MonashTA/2022_PSY3062/Tutorial 2022/Tutorial 3/Tutorial 3 - Perceived Control of Internal States.csv&quot;</span>)</span></code></pre></div>
 <p>These methods both work well. However, <code>fread()</code> is more
@@ -1879,7 +1908,8 @@ whether <code>d</code> and <code>d0</code> are the same dataset using
 the <code>identical()</code> function.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">identical</span>(d, d0)</span></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
-<p>Let’s quickly inspect <code>d</code></p>
+<p>Let’s quickly inspect <code>d</code>. You can also view by clicking
+on <code>d</code> in your environment pane</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(d)</span></code></pre></div>
 <table class="table table-striped table-condensed table-hover" style="margin-left: auto; margin-right: auto;">
 <thead>
@@ -2279,35 +2309,15 @@ pc18
 </tr>
 </tbody>
 </table>
-<div id="viewing-a-dataset" class="section level2" number="3.1">
-<h2><span class="header-section-number">3.1</span> Viewing a
-dataset</h2>
-<p>There are different ways to inspect a dataset.</p>
-<ul>
-<li>Click on the dataset in your environment pane</li>
-<li><code>View()</code></li>
-<li><code>str()</code></li>
-<li><code>head()</code></li>
-<li><code>attributes()</code></li>
-</ul>
-<div class="lblue">
-<p><strong>You Try It</strong></p>
-<ol style="list-style-type: decimal">
-<li>What is the structure of <code>d</code>? How many rows/columns are
-there?</li>
-<li>How many participants/observations?</li>
-<li>How many variables?</li>
-</ol>
 </div>
-</div>
-</div>
-<div id="working-with-data" class="section level1" number="4">
-<h1><span class="header-section-number">4</span> Working with Data</h1>
-<div id="data-table-syntax" class="section level2" number="4.1">
-<h2><span class="header-section-number">4.1</span> Data table
+<div id="working-with-data-using-data.table" class="section level1" number="5">
+<h1><span class="header-section-number">5</span> Working with Data using
+data.table</h1>
+<div id="data-table-syntax" class="section level2" number="5.1">
+<h2><span class="header-section-number">5.1</span> Data table
 syntax</h2>
-<p>In data table, we write all of our codes inside <code>[...]</code>.
-The syntax of data table is <code>DT[i, j, by]</code>, which means
+<p>In data table, we write our code inside <code>[...]</code>. The
+syntax of data table is <code>DT[i, j, by]</code>, which means
 subset/reorder rows using <code>i</code>, then calculate <code>j</code>,
 grouped by <code>by</code>.</p>
 <ul>
@@ -2321,22 +2331,24 @@ For example, you might like to perform an function only with
 females/males.</li>
 </ul>
 </div>
-<div id="creating-a-new-variable" class="section level2" number="4.2">
-<h2><span class="header-section-number">4.2</span> Creating a new
+<div id="creating-a-new-variable" class="section level2" number="5.2">
+<h2><span class="header-section-number">5.2</span> Creating a new
 variable</h2>
 <p>Columns can be referred to as if they are variables. This means
-creating a variable is done in <code>j</code>. For example, we want to
-make a new variable <code>ID</code> that count from 1 to the maximum
-number of rows (i.e., observations). As we want this variable for all
-participant, <code>i</code> is left blank.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>d[, ID <span class="sc">:</span><span class="er">=</span> <span class="dv">1</span><span class="sc">:</span> .N]</span></code></pre></div>
+creating a variable is done in <code>j</code>. In
+<code>data.table</code>, we use a special symbol <code>:=</code> for
+assignment within the <code>[...]</code>.</p>
+<p>For example, we want to make a new variable <code>NewVar</code> that
+assign the same value of 1 to all participants. As this variable applies
+to all participant, <code>i</code> is left blank.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>d[ , NewVar <span class="sc">:</span><span class="er">=</span> <span class="dv">1</span>]</span></code></pre></div>
 <div class="sand">
 <p><strong>Tips</strong></p>
 <p>If you receive an error saying
 <code>Error in</code>:=<code>(NewVar, 1) : could not find function &quot;:=&quot;</code>,
 that means you don’t have the package that has the function “:=”. This
-function is from the <code>data.table</code> package, so you have it
-load it.</p>
+function is from the <code>data.table</code> package, so you need to
+load it using the <code>library()</code> function.</p>
 </div>
 <br />
 
@@ -2347,41 +2359,38 @@ and assign <code>PSY3062</code> to it.</p>
 </div>
 <p><br />
 </p>
-<p><strong>Creating new variable using a existing one</strong> For
-example, we want our <code>ID</code> variable to start from 2 instead of
-1, we can add 1 to each row of <code>ID</code>. We will call the new
-variable <code>IDNew</code>.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>d[, IDNew <span class="sc">:</span><span class="er">=</span> ID <span class="sc">+</span> <span class="dv">1</span>]</span></code></pre></div>
 </div>
-<div id="droppingdeleting-variable" class="section level2" number="4.3">
-<h2><span class="header-section-number">4.3</span> Dropping/Deleting
+<div id="droppingdeleting-variable" class="section level2" number="5.3">
+<h2><span class="header-section-number">5.3</span> Dropping/Deleting
 variable</h2>
-<p>If we want to delete variables, we assign <code>NULL</code> to it.
-Here is the code to drop the <code>ID</code> variable from
+<p>When we want to delete variables, we assign <code>NULL</code> to it.
+Here is the code to drop variable <code>NewVar</code> from
 <code>d</code>:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>d[, ID <span class="sc">:</span><span class="er">=</span> <span class="cn">NULL</span>]</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>d[, IDNew <span class="sc">:</span><span class="er">=</span> <span class="cn">NULL</span>]</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>d[, NewVar <span class="sc">:</span><span class="er">=</span> <span class="cn">NULL</span>]</span></code></pre></div>
 <br />
 
 <div class="lblue">
 <p><strong>You Try It</strong></p>
 <p>Drop the <code>Class</code> variable.</p>
-<ol style="list-style-type: decimal">
-<li>How many rows does d have before we drop the ID variable?</li>
-<li>How many rows does d have after?</li>
-</ol>
 </div>
 </div>
-<div id="subsetting-dataset" class="section level2" number="4.4">
-<h2><span class="header-section-number">4.4</span> Subsetting
-dataset</h2>
-<div id="subsetting-rows-in-i" class="section level3" number="4.4.1">
-<h3><span class="header-section-number">4.4.1</span> Subsetting rows in
-<code>i</code></h3>
+</div>
+<div id="subsetting-dataset" class="section level1" number="6">
+<h1><span class="header-section-number">6</span> Subsetting dataset</h1>
+<p>Subsetting is a useful feature in <code>R</code> that can be used to
+select or filter observations/participants and variables. Subsetting can
+be performed using both rows (represented by <code>i</code>) and columns
+(represented by <code>j</code>). For example, you can subset the PSY3062
+dataset to keep only female participants (subsetting by rows) or the
+three variables that you’re using for your research project (subsetting
+by columns).</p>
+<div id="subsetting-rows-in-i" class="section level2" number="6.1">
+<h2><span class="header-section-number">6.1</span> Subsetting rows in
+<code>i</code></h2>
 <p>Get the first row from <code>d</code>. Key word here is row. We need
-to provide <code>i</code> with the row indices that we are after. This
+to provide <code>i</code> with the row index that we are after. This
 returns a data table d with all columns at the first row.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>d[<span class="dv">1</span>, ]</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>d[<span class="dv">1</span>, ]</span></code></pre></div>
 <table class="table table-condensed table-hover" style="margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
@@ -2502,16 +2511,20 @@ pc18
 </table>
 <div class="lblue">
 <p><strong>You Try It</strong></p>
-<p>Subset the first 10 rows from <code>d</code>.</p>
+<p>Subset the first 10 rows from <code>d</code>. Remember that we are
+asking for multiple rows. When there are multiple values, we use the
+<code>c()</code> function to make it a vector, e.g.,
+<code>c(1, 2)</code> not <code>1, 2</code>. We can also create sequence
+of numbers using <code>:</code>.</p>
 </div>
 </div>
-<div id="subsetting-columns-in-j" class="section level3" number="4.4.2">
-<h3><span class="header-section-number">4.4.2</span> Subsetting columns
-in <code>j</code></h3>
+<div id="subsetting-columns-in-j" class="section level2" number="6.2">
+<h2><span class="header-section-number">6.2</span> Subsetting columns in
+<code>j</code></h2>
 <p>Get the first column from <code>d</code>. Because we are selecting
 columns, we provide <code>j</code> with the column indices that we are
 after.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>d[, <span class="dv">1</span>]</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>d[ , <span class="dv">1</span>]</span></code></pre></div>
 <table class="table table-condensed table-hover" style="margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
@@ -2559,11 +2572,15 @@ pc1
 </div>
 <p><br />
 </p>
+</div>
+<div id="subsetting-data-by-variable-names" class="section level2" number="6.3">
+<h2><span class="header-section-number">6.3</span> Subsetting data by
+variable names</h2>
 <p>We can also subset using the names of the variables. For example, we
 only want variable <code>pc1</code> and <code>pc2</code>. This is
 helpful when we know the variable names, but we don’t know which column
 indices they are.</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>d[, .(pc1, pc2)]</span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>d[, .(pc1, pc2)]</span></code></pre></div>
 <table class="table table-condensed table-hover" style="margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
@@ -2627,13 +2644,24 @@ pc2
 </tbody>
 </table>
 </div>
+<div id="create-a-sub-dataset" class="section level2" number="6.4">
+<h2><span class="header-section-number">6.4</span> Create a sub
+dataset</h2>
+<p>We can create a new dataset with our chosen variables just like how
+we create any objects in <code>R</code>.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>d1 <span class="ot">&lt;-</span> d[, .(pc1, pc2)]</span></code></pre></div>
 </div>
-<div id="missing-data" class="section level2" number="4.5">
-<h2><span class="header-section-number">4.5</span> Missing data</h2>
+</div>
+<div id="missing-data" class="section level1" number="7">
+<h1><span class="header-section-number">7</span> Missing data</h1>
+<div id="checking-for-missing-data" class="section level2" number="7.1">
+<h2><span class="header-section-number">7.1</span> Checking for missing
+data</h2>
 <p>We can check for missing data using the <code>is.na()</code>
-function. This shows us where pc1 has missing data. We are performing
-this task in the first section of the squared brackets <code>i</code>,
-which means that we are subsetting rows.</p>
+function.</p>
+<p>This shows us where pc1 has missing data. We are performing this task
+in the first section of the squared brackets <code>i</code>, which means
+that we are subsetting rows .</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>d[<span class="fu">is.na</span>(pc1)]</span></code></pre></div>
 <table class="table table-condensed table-hover" style="margin-left: auto; margin-right: auto;">
 <thead>
@@ -3033,15 +3061,16 @@ NA
 </tr>
 </tbody>
 </table>
-<p>We can also make this subset of <code>d</code> a new dataset, called
-<code>d1</code>.</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>d1 <span class="ot">&lt;-</span> d[<span class="fu">is.na</span>(pc1)]</span></code></pre></div>
-<p>Conversely, we might want to subset <code>d</code> to include only
-rows that don’t have missing data in <code>pc1</code>. To do this, we
-add <code>!</code> before <code>is.na()</code>. <code>!</code> means
-NOT. Here, we make a new dataset <code>d2</code> that only includes rows
-that don’t have missing data on <code>pc1</code>.</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>d2 <span class="ot">&lt;-</span> d[<span class="sc">!</span><span class="fu">is.na</span>(pc1)]</span></code></pre></div>
+</div>
+<div id="removing-missing-data" class="section level2" number="7.2">
+<h2><span class="header-section-number">7.2</span> Removing missing
+data</h2>
+<p>We can subset <code>d</code> to include only rows that don’t have
+missing data in <code>pc1</code>. To do this, we add <code>!</code>
+before <code>is.na()</code>. <code>!</code> means NOT. Here, we make a
+new dataset <code>d3</code> that only includes rows that don’t have
+missing data on <code>pc1</code>.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>d2 <span class="ot">&lt;-</span> d[<span class="sc">!</span><span class="fu">is.na</span>(pc1)]</span></code></pre></div>
 <div class="brown">
 <p><strong>Exercise</strong></p>
 <p>How many rows do <code>d</code>, <code>d1</code>, and <code>d2</code>
@@ -3050,20 +3079,20 @@ have? How many rows have missing data on <code>pc1</code>?</p>
 <p><br />
 Alternatively, you can use the <code>complete.cases()</code> function to
 find rows that don’t have missing data.</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>d3 <span class="ot">&lt;-</span> d[<span class="fu">complete.cases</span>(pc1)]</span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>d3 <span class="ot">&lt;-</span> d[<span class="fu">complete.cases</span>(pc1)]</span></code></pre></div>
 <p><code>complete.cases()</code> and <code>!is.na()</code> work
 similarly in this example. We can confirm this by checking if
-<code>d2</code> and <code>d3</code> are identical using
+<code>d3</code> and <code>d4</code> are identical using
 <code>identical()</code> function.</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">identical</span>(d2, d3)</span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">identical</span>(d2, d3)</span></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
 <p>We can also perform this on the entire dataset, rather than just only
 <code>pc1</code>.</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>d4 <span class="ot">&lt;-</span> d[<span class="fu">complete.cases</span>(d)]</span></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>d4 <span class="ot">&lt;-</span> d[<span class="fu">complete.cases</span>(d)]</span></code></pre></div>
 </div>
 </div>
-<div id="scoring-and-reliability" class="section level1" number="5">
-<h1><span class="header-section-number">5</span> Scoring and
+<div id="scoring-and-reliability" class="section level1" number="8">
+<h1><span class="header-section-number">8</span> Scoring and
 Reliability</h1>
 <p>When we work with our own data, often we have to score our variables
 from the individual item scores. Scales/subscales in psychology are
@@ -3074,10 +3103,10 @@ usually scored by summing or taking the average.</p>
 information about the scale, reverse scoring that are crucial for
 computing the correct sum or average score.</p>
 </div>
-<div id="reverse-scoring" class="section level2" number="5.1">
-<h2><span class="header-section-number">5.1</span> Reverse scoring</h2>
-<p>We often have to reverse score before computing the sum or average.
-You should have learnt about reverse scoring in last week’s tutorial. We
+<div id="reverse-scoring" class="section level2" number="8.1">
+<h2><span class="header-section-number">8.1</span> Reverse scoring</h2>
+<p>We often have to reverse some items before computing the sum or
+average. You learnt about reverse scoring in last week’s tutorial. We
 are going to subtract the items that require reverse scoring from
 <code>6</code>.</p>
 <div class="brown">
@@ -3087,32 +3116,32 @@ are going to subtract the items that require reverse scoring from
 <li>What items need to be reversed?</li>
 </ol>
 </div>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>d[, pc3 <span class="sc">:</span><span class="er">=</span> <span class="dv">6</span> <span class="sc">-</span> pc3]</span></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>d[ , pc3 <span class="sc">:</span><span class="er">=</span> <span class="dv">6</span> <span class="sc">-</span> pc3]</span></code></pre></div>
 </div>
-<div id="average-score" class="section level2" number="5.2">
-<h2><span class="header-section-number">5.2</span> Average score</h2>
+<div id="average-score" class="section level2" number="8.2">
+<h2><span class="header-section-number">8.2</span> Average score</h2>
 <p>We calculate average scores using the <code>rowMeans()</code>
 function (take the mean for a row of data).</p>
 <ul>
 <li><code>.SD</code> is a special symbol of <code>data.table</code>. It
-refers to a subset of data.table. Its job is to hold the data for the a
-particular group defined by us.</li>
+refers to a <strong>S</strong>ubset of <strong>d</strong>ata.table. Its
+job is to hold the data for the a particular group defined by us.</li>
 <li><code>na.rm</code> stands for
 <strong>R</strong>e<strong>m</strong>ove missing data
-(<strong>NA</strong>). In this case, it asks R to remove missing data
-when calculating the mean.</li>
+(<strong>NA</strong>). In this case, it asks <code>R</code> to remove
+missing data when calculating the mean.</li>
 <li><code>.SDcols</code> specifies the columns of the
 <code>data.table</code> that are included in <code>.SD</code>.</li>
 </ul>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>d[, pc <span class="sc">:</span><span class="er">=</span> <span class="fu">rowMeans</span>(.SD, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>   .SDcols <span class="ot">=</span> <span class="fu">c</span>(<span class="st">&quot;pc1&quot;</span>, <span class="st">&quot;pc2&quot;</span>, <span class="st">&quot;pc3&quot;</span>)]</span></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>d[ , pc_mean <span class="sc">:</span><span class="er">=</span> <span class="fu">rowMeans</span>(.SD, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>                         .SDcols <span class="ot">=</span> <span class="fu">c</span>(<span class="st">&quot;pc1&quot;</span>, <span class="st">&quot;pc2&quot;</span>, <span class="st">&quot;pc3&quot;</span>)]</span></code></pre></div>
 <div class="lblue">
 <p><strong>You Try It</strong></p>
 <p>Calculate the average of all variables.</p>
 </div>
 </div>
-<div id="total-score" class="section level2" number="5.3">
-<h2><span class="header-section-number">5.3</span> Total score</h2>
+<div id="total-score" class="section level2" number="8.3">
+<h2><span class="header-section-number">8.3</span> Total score</h2>
 <p>There are two ways to calculate the total score:</p>
 <ul>
 <li>The simplest approach is literally adding items using
@@ -3122,28 +3151,31 @@ return missing value <code>NA</code> for the total score for this
 participant. Recall when this happened to us trying to calculating the
 sum of the <code>x</code> vector that contains a missing value last
 week.</li>
-<li>The recommended approach is using <code>rowMeans()</code> function.
-We use <code>rowMeans()</code> to get a average score. We then get back
-to the “sum” scale by multiple the result to the number of items (e.g.,
-10 if a scale has 10 items).</li>
+<li>Another approach is using <code>rowMeans()</code> function. We use
+<code>rowMeans()</code> to get an average score. We then get back to the
+“sum” scale by multiple the result to the number of items (e.g., 10 if a
+scale has 10 items). This works well if we have missing value on a small
+number of items, as we can keep participants with small amount of
+missing data. This doesn’t work if the participants have missing data on
+all items (obviously).</li>
 </ul>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># add items</span></span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>d[, pctotal <span class="sc">:</span><span class="er">=</span> pc1 <span class="sc">+</span> pc2 <span class="sc">+</span> pc3]</span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="co"># create a total score using rowMeans</span></span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>d[, pctotal <span class="sc">:</span><span class="er">=</span> <span class="fu">rowMeans</span>(.SD, <span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="sc">*</span> <span class="dv">3</span>,</span>
-<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>   .SDcols <span class="ot">=</span> <span class="fu">c</span>(<span class="st">&quot;pc1&quot;</span>, <span class="st">&quot;pc2&quot;</span>, <span class="st">&quot;pc3&quot;</span>)]</span></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># add items</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>d[, pc_total <span class="sc">:</span><span class="er">=</span> pc1 <span class="sc">+</span> pc2 <span class="sc">+</span> pc3]</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="co"># create a total score using rowMeans</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>d[, pc_total <span class="sc">:</span><span class="er">=</span> <span class="fu">rowMeans</span>(.SD, <span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="sc">*</span> <span class="dv">3</span>,</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>                         .SDcols <span class="ot">=</span> <span class="fu">c</span>(<span class="st">&quot;pc1&quot;</span>, <span class="st">&quot;pc2&quot;</span>, <span class="st">&quot;pc3&quot;</span>)]</span></code></pre></div>
 <div class="lblue">
 <p><strong>You Try It</strong></p>
-<p>Calculate the sum of all variables.</p>
+<p>Calculate the sum of all <code>pc</code> variables.</p>
 </div>
 </div>
-<div id="reliability" class="section level2" number="5.4">
-<h2><span class="header-section-number">5.4</span> Reliability</h2>
+<div id="reliability" class="section level2" number="8.4">
+<h2><span class="header-section-number">8.4</span> Reliability</h2>
 <p>Reliability is assessed using Cronbach’s alpha. Cronbach’s alpha is
 calculated from the individual items, not the total nor mean.</p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="do">## calculate Cronbach&#39;s alpha</span></span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>psych<span class="sc">::</span><span class="fu">alpha</span>(<span class="fu">as.data.frame</span>(d[, .(pc1, pc2, pc3)]))</span></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="do">## calculate Cronbach&#39;s alpha</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>psych<span class="sc">::</span><span class="fu">alpha</span>(<span class="fu">as.data.frame</span>(d[, .(pc1, pc2, pc3)]))</span></code></pre></div>
 <pre><code>## 
 ## Reliability analysis   
 ## Call: psych::alpha(x = as.data.frame(d[, .(pc1, pc2, pc3)]))
@@ -3175,16 +3207,16 @@ calculated from the individual items, not the total nor mean.</p>
 ## pc3 0.24 0.32 0.26 0.15 0.04 0.01</code></pre>
 <div class="lblue">
 <p><strong>You Try It</strong></p>
-<p>Calculate Cronbach’s alpha for the entier scale all items. Pay
-attention to the warning.</p>
+<p>Calculate Cronbach’s alpha for the this scale. Pay attention to the
+warning.</p>
 </div>
 <p><br />
 </p>
 <p>Let’s run this again using the <code>check.keys = TRUE</code> option.
 This option tells <code>alpha()</code> function to automatically reverse
 items when calculating Cronbach’s alpha.</p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>psych<span class="sc">::</span><span class="fu">alpha</span>(<span class="fu">as.data.frame</span>(d[, .(pc1, pc2, pc3, pc4, pc5, pc6, pc7, pc8, pc9, pc10,</span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>                                 pc11, pc12, pc13, pc14, pc15, pc16, pc17, pc18)]), <span class="at">check.keys =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>psych<span class="sc">::</span><span class="fu">alpha</span>(<span class="fu">as.data.frame</span>(d[, .(pc1, pc2, pc3, pc4, pc5, pc6, pc7, pc8, pc9, pc10,</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>                                 pc11, pc12, pc13, pc14, pc15, pc16, pc17, pc18)]), <span class="at">check.keys =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <pre><code>## Warning in psych::alpha(as.data.frame(d[, .(pc1, pc2, pc3, pc4, pc5, pc6, : Some items were negatively correlated with total scale and were automatically reversed.
 ##  This is indicated by a negative sign for the variable name.</code></pre>
 <pre><code>## 
@@ -3269,24 +3301,104 @@ items when calculating Cronbach’s alpha.</p>
 interpreting these results by running this code <code>?alpha</code>. The
 most helpful output here is the <code>raw_alpha</code>. It tells you
 about the Cronbach’s alpha, which is 0.9.</p>
-<p><em>What does this value indicate?</em></p>
+<p><em>What does this value indicate? Does this scale has good
+reliability?</em></p>
 </div>
-<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># run ?alpha below</span></span></code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># run ?alpha below if interested</span></span></code></pre></div>
+</div>
+<div id="t-score" class="section level2" number="8.5">
+<h2><span class="header-section-number">8.5</span> T-Score</h2>
+<p>T Scores are calculated via the scoring conversion tables.</p>
+<p>Let’s first load the dataset for <em>week 3 tutorial</em>, which
+contains variables that require converting to T-scores.</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>d_tscore <span class="ot">&lt;-</span> <span class="fu">fread</span>(<span class="st">&quot;~/Library/CloudStorage/OneDrive-MonashUniversity/Work/MonashTA/2022_PSY3062/Tutorial 2022/Tutorial 3/Tutorial 3 - T scores.csv&quot;</span>)</span></code></pre></div>
+<div id="step-1---calculate-rawtotal-score" class="section level3" number="8.5.1">
+<h3><span class="header-section-number">8.5.1</span> Step 1 - Calculate
+raw/total score</h3>
+<p>We first need the total score. Here is the code to calculate the
+total scores for only 3 items. Your code should include all items of the
+scale.</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>d_tscore[, SS_COMP_Total <span class="sc">:</span><span class="er">=</span> <span class="fu">rowMeans</span>(.SD, <span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="sc">*</span> <span class="dv">3</span>,</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>                                     .SDcols <span class="ot">=</span> <span class="fu">c</span>(<span class="st">&quot;SS_COMP_1&quot;</span>, <span class="st">&quot;SS_COMP_2&quot;</span>, <span class="st">&quot;SS_COMP_3&quot;</span>)]</span></code></pre></div>
+</div>
+<div id="step-2---convert-to-t-score" class="section level3" number="8.5.2">
+<h3><span class="header-section-number">8.5.2</span> Step 2 - Convert to
+T-score</h3>
+<p><strong>Conversion chart</strong> : <a href="https://www.healthmeasures.net/images/promis/manuals/PROMIS_Companionship_Scoring_Manual.pdf" class="uri">https://www.healthmeasures.net/images/promis/manuals/PROMIS_Companionship_Scoring_Manual.pdf</a></p>
+<p>This task is similar to assigning values to a new variable. Here we
+match values of our raw scores to the corresponding T-scores to create a
+new T-score variable. The code formula is below:</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create the a vector of scale (T-)scores using the conversion chart</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>T_score <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">25.2</span>, <span class="fl">29.5</span>, <span class="fl">31.8</span>, <span class="fl">33.8</span>, <span class="fl">35.5</span>, <span class="fl">37.3</span>, </span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>             <span class="fl">39.1</span>, <span class="fl">40.8</span>, <span class="fl">42.5</span>, <span class="fl">44.3</span>, <span class="fl">46.2</span>, <span class="fl">48.1</span>, </span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>             <span class="fl">50.0</span>, <span class="fl">52.1</span>, <span class="fl">54.3</span>, <span class="fl">56.9</span>, <span class="fl">63.1</span>)</span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a vector of raw scores</span></span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a><span class="co"># If applicable, use a sequence of numbers</span></span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>Raw_score <span class="ot">&lt;-</span> <span class="dv">4</span><span class="sc">:</span><span class="dv">20</span></span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert to t-score</span></span>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a>d_tscore[, SS_COMP_TScore <span class="sc">:</span><span class="er">=</span> T_score[<span class="fu">match</span>(SS_COMP_Total, Raw_score)]]</span></code></pre></div>
+<p>Check your data after recoding using the <code>View(d_tscore)</code>
+function.</p>
+<div class="lblue">
+<p><strong>You Try It</strong></p>
+<p>In this week tutorial, calculate the T-score of the entire scale.</p>
+</div>
+<p><br />
+</p>
 </div>
 </div>
-<div id="exercises" class="section level1" number="6">
-<h1><span class="header-section-number">6</span> Exercises</h1>
-<div id="task-1---scoring" class="section level2" number="6.1">
-<h2><span class="header-section-number">6.1</span> Task 1 - Scoring</h2>
+</div>
+<div id="exercises---data-management-for-your-research-project" class="section level1" number="9">
+<h1><span class="header-section-number">9</span> Exercises - Data
+management for your research project</h1>
+<div id="task-1---loading-data" class="section level2" number="9.1">
+<h2><span class="header-section-number">9.1</span> Task 1 - Loading
+data</h2>
+<p>Write the code that loads your research report dataset in the code
+chunk below.</p>
+<div class="pink">
+<p><strong>Hints</strong></p>
+<p>Revisit <code>Loading data in R</code> section of our Week 2 workshop
+for instructions.</p>
+</div>
+</div>
+<div id="task-2---subsetting-your-variables" class="section level2" number="9.2">
+<h2><span class="header-section-number">9.2</span> Task 2 - Subsetting
+your variables</h2>
+<p>Create a new dataset by subsetting only the variables you plan to use
+for your research report.</p>
+<div class="pink">
+<p><strong>Hints</strong></p>
+<p>Revisit <code>Subsetting columns</code> section in this week workshop
+for instructions. You might like to specify the columns/variables using
+their names rather than the column indices.</p>
+</div>
+</div>
+<div id="task-3---removing-missing-data" class="section level2" number="9.3">
+<h2><span class="header-section-number">9.3</span> Task 3 - Removing
+missing data</h2>
+<p>Create a new dataset that removes missing data from your research
+report dataset in the code chunk below.</p>
+<div class="pink">
+<p><strong>Hints</strong></p>
+<p>Use either <code>!is.na()</code> or <code>complete.cases()</code>
+function. Always inspect your dataset after running the code to make
+sure it works as intended.</p>
+</div>
+</div>
+<div id="task-4---scoring" class="section level2" number="9.4">
+<h2><span class="header-section-number">9.4</span> Task 4 - Scoring</h2>
 <p>Score the variables you have chosen for your research report. This
-includes reverse scoring and computing the final score by either summing
-or averaging individual items.</p>
+should include reverse scoring and computing the final score by either
+summing or averaging individual items.</p>
 </div>
-<div id="task-2---reliability" class="section level2" number="6.2">
-<h2><span class="header-section-number">6.2</span> Task 2 -
+<div id="task-5---reliability" class="section level2" number="9.5">
+<h2><span class="header-section-number">9.5</span> Task 5 -
 Reliability</h2>
 <p>Calculate the Cronbach’s alpha for the scales you have chosen. Do
-those scales have good reliability?</p>
+your scales have good reliability?</p>
 </div>
 </div>
 

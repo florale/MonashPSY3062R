@@ -238,7 +238,7 @@ d[is.na(pc1)]
 
 ## Removing missing data
 We can subset `d` to include only rows that don't have missing data in `pc1`. 
-To do this, we add `!` before `is.na()`. `!` means NOT. Here, we make a new dataset `d3` that only 
+To do this, we add `!` before `is.na()`. `!` means NOT. Here, we make a new dataset `d2` that only 
 includes rows that don't have missing data on `pc1`.
 
 ```{r}
@@ -256,7 +256,7 @@ d3 <- d[complete.cases(pc1)]
 ```
 
 `complete.cases()` and `!is.na()` work similarly in this example. We can confirm this by checking if 
-`d3` and `d4` are identical using `identical()` function.
+`d2` and `d3` are identical using `identical()` function.
 
 ```{r}
 identical(d2, d3)

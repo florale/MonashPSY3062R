@@ -13,5 +13,5 @@ This GitHub repository stores all the resources for the workshops, including HTM
 - **Week 3** *Working with Data and Scoring*.
   Please see [Week3_WorkDataScoring.html](Week3_WorkDataScoring.html).
   
-- **Week 4** *Working with Data and Assumptions*.
-  Please see [Content](Week4_XXX.html).
+- **Week 4** *Assumptions*.
+  Please see [Week4_Assumptions.html](Week4_Assumptions.html).

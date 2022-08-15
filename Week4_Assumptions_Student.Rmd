@@ -1,0 +1,444 @@
+---
+title: "Week 4 - Assumptions"
+author: "Your Name"
+date: "`r Sys.Date()`"
+output: 
+  html_document:
+    theme: sandstone
+    highlight: zenburn
+    css: "florastheme.css"
+    toc: yes
+    toc_float: yes
+    collapsed: no
+    smooth_scroll: no
+    toc_depth: 4
+    fig_width: 6
+    fig_height: 4.5
+    fig_caption: yes
+    number_sections: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+options(digits = 4)
+```
+
+# Intro
+This week we focus on checking and dealing with assumptions for linear regression and ANOVA.
+We also briefly talk about the `ggplot2` package and learn how to use it to visualise data.
+
+# Packages
+First thing first. Open your R project and load the packages.
+
+```{r pkg, message=FALSE}
+library(data.table)
+library(psych)
+library(car)
+library(ggplot2)
+library(JWileymisc)
+library(extraoperators)
+```
+
+# Data
+Let's start by loading your dataset for the research report.
+
+```{r}
+d <- fread("")
+```
+
+# Scoring practice 
+**Exercise**
+
+Scores at least 2 continuous variables you have chosen for your research report.
+If you don't want to score your own variables and would still like to try the code, use the 
+`week4_dataset.csv` file.
+
+```{r, echo=FALSE}
+
+
+```
+
+# Categorical/Factor variables
+Factor variables in `R` are used to represent categorical data. Factors 
+store data as integer values (i.e., levels) with a corresponding set of character values (i.e., labels) 
+to use when the factor is displayed. While factors look like character vectors, they are actually integers.
+For example, when we make the sex variable a factor variable, male = 0, female = 1, 
+sex will be displayed as male/female in `R`. However, when it is entered into a regression model, 
+`R` will help us do dummy coding. Dummy coding is helpful as you can examine categorical variable 
+in a regression model. That's why we usually convert categorical data into factors.
+
+Let's try this on the `sex` variable. First, take a look at how it is currently coded.
+
+```{r}
+str(d$Sex)
+table(d$Sex)
+```
+
+We create a factor using the `factor()` function.
+
+```{r}
+d[, Sex := factor(
+  Sex,
+  levels = c(0,1),
+  labels = c("Male", "Female"))]
+```
+
+See how it is now after being recoded using the `table()` function.
+
+```{r}
+table(d$Sex)
+```
+
+If you view the datset, you will see that the labels are displayed.
+
+```{r}
+# View(d)
+```
+
+**You Try It**
+
+Convert the `BornAUS` variable into a factor. You can keep the name, or give it a new name.
+
+
+```{r}
+
+```
+
+# Intro to `ggplot2`
+Visualising data is an efficient way to understand our data and communicate our work. 
+There are several packages in `R` for producing statistical, or data, graphics. 
+This week we focus on inspecting/visualising our data and check assumptions using 
+function from base R or a very cool package `ggplot2`.
+
+`ggplot2` stands for **G**rammar of **G**raphics. 
+ggplot is very powerful in a way that you can build and customise your graphics. 
+You can do this by building layer by layer by adding new elements. 
+We will cover the basics of `ggplot2` in this semester.
+Let's start with `ggplot2` syntax.
+
+The base formula to build ggplot is  `ggplot(data, mapping) +  geoms()`
+
+* `ggplot()` build base plot.
+* `data` bind the plot to a specific dataset.
+* `mapping` using the aesthetic `aes()` function to select variables to be plotted and specify .
+   how to present them in the graph, e.g., as x/y positions or characteristics such as size, shape, color, etc.
+* `geoms()` add geoms to specify how to represent the data in the plot (points, lines, bars).
+
+Common geoms, some of which  we will be using today:
+
+* `geom_point()` scatter plots, dot plots, etc.
+* `geom_line()` trend lines, etc.
+* `geom_boxplot()` boxplots.
+* `geom_smooth()` to check patterns in your data (e.g., linearity).
+* `geom_histogram()` and `geom_density()` to check distribution.
+
+```{r}
+# example scatter plot
+ggplot(d,
+       aes(
+         x = Variable1,
+         y = Variable2)) + 
+  geom_point()
+```
+
+
+```{r}
+# example line plot
+ggplot(d[1:10, ],
+       aes(
+         x = Variable1,
+         y = Variable2)) + 
+  geom_line()
+```
+
+# Assumptions
+We often use graphs to visually assess assumptions, such as
+normality and for outliers. There are several ways to check assumptions in `R`. 
+You can choose from Base R or `ggplot2`.
+It's up to you which functions you use, they will probably ultimately give you the same results.
+Let's apply ggplot principles to inspect our data and check assumptions.
+
+## Linearity
+### Scatter Plot
+Scatter Plot is probably the easiest way to check linearity.
+
+**Code Template for Scatter Plot**
+
+* For Base R, use `plot()` function `plot(dataset_name$iv_name, dataset_name$dv_name)`
+* For ggplot, use `geom_point()` function
+
+
+```{r,}
+# base R plot
+plot(d$Variable1, d$Variable2)
+```
+
+
+```{r}
+# ggplot
+ggplot(d,
+       aes(
+         x = Variable1,
+         y = Variable2)) +  
+  geom_point()
+```
+
+### Adding a line to Scatter Plot
+We can add a line to the plot to visualise the data/relationship easily by using the `geom_smooth()` function.
+
+```{r}
+ggplot(d,
+       aes(
+         x = Variable1,
+         y = Variable2)) +  
+  geom_point() +
+  geom_smooth(method = 'lm', se = FALSE)
+```
+
+**You Try It**
+
+Check **Linearity** assumption using 2 variables that you just scored. 
+Does their relationship follow a straight line?
+
+
+## Normality
+### Shapiro-Wilk test
+
+**Code Template for Shapiro-Wilk test **
+
+`shapiro.test(dataset_name$variable_name)`
+
+
+```{r}
+shapiro.test(d$Variable1)
+```
+
+### Histogram
+
+**Code Template for Histogram **
+
+* For Base R, use `hist()` -  `hist(dataset_name$variable_name)`
+* For ggplot, use `geom_histogram()` or `geom_density()`
+
+```{r}
+# base R
+hist(d$Variable1)
+
+```
+
+
+```{r}
+
+# ggplot
+ggplot(d,
+       aes(x = Variable1)) + 
+  geom_histogram()
+```
+
+We can also use a density plot using the `geom_density()` function, which also attempts to show the
+distribution, but using a smooth density function rather than binning
+the data and plotting the frequencies like how the `geom_histogram()` does.
+
+```{r}
+ggplot(d,
+       aes(x = Variable1)) + 
+  geom_density()
+```
+
+### QQ Plot
+
+**Code Template for QQ Plot**
+
+`qplot(sample = variable_name, data = dataset_name)`
+
+```{r}
+qplot(sample = Variable1, data = d)
+```
+
+**You Try It**
+
+Check **Normality** assumption for one or more variables that you just scored. 
+Do your variables follow normal distributions?
+
+### Box plots
+Boxplots can be used to visualize the distribution of variables and extreme values. 
+
+```{r}
+# ggplot
+ggplot(d,
+       aes(
+         x = Variable1)) +  
+  geom_boxplot()
+```
+
+### Box plot by groups
+We can also use boxplot to check distribution of variables in different groups.
+
+```{r}
+ggplot(d,
+       aes(
+         x = Sex,
+         y = Variable1)) + 
+  geom_boxplot(color = "#7F7F7F", fill = "#FAF7F3")
+```
+
+## Normality of Residuals
+
+Normality of Residuals is checked using our linear regression model, which means you will need a model first.
+We will be learning about fitting linear regression in R later, but let's quickly run a  model to check 
+Normality of residuals. let's call our model object `m`.
+
+**Code Template for Linear Regression Model**
+
+`lm(dv_name ~ iv_name, data = dataset_name)`
+
+
+```{r lm}
+m <- lm(Variable1 ~ Age, data = d)
+```
+
+**Code Template for checking Normality of Residuals**
+
+`plot(model_name, 2)`
+
+```{r res}
+plot(m, 2)
+```
+
+**You Try It**
+
+Run a linear regression model and check **Normality of Residuals** assumption. Is the assumption met?
+
+## Homogeneity of Variance
+### Homoscedasticity
+Similar to Normality of Residuals, we also need our model to check Homoscedasticity.
+
+**Code Template for checking Homoscedasticity**
+
+`plot(model_name, 1)`
+
+```{r}
+plot(m, 1)
+```
+
+**You Try It**
+
+Check **Homoscedasticity** assumption of your model. Is the assumption met?
+
+### Levene's Test for ANOVAs 
+
+**Code Template for Levene's Test**
+
+`leveneTest(dv_name ~ iv_name, data = dataset_name)`
+
+```{r}
+leveneTest(Variable1 ~ Sex, data = d)
+```
+
+# Dealing with Normality and Outliers 
+Common methods to deal with extreme values are:
+
+* Removal of extreme values
+* Winsorisation
+* Transformation
+
+**Tips** 
+
+Always inspect your plots again after transformation to check if the transformation has 
+improved/addressed normality/outliers.
+
+## Checking distributions 
+Let's use a very useful function `testDistribution()` combined with `plot()` 
+from the `JWileymisc` package to inspect the distribution of a variable.
+
+There are two parts to this graph that you may find helpful. 
+
+* The distribution of the raw data/variable is represented as a solid black line. 
+  A dashed blue line shows what a normal distribution would look like. 
+  If these two lines are close, that indicates the variable is approximately normally 
+  distributed.
+* Outliers (if any) are identified in black while the rest of data points are light grey. 
+  We use `extremevalues = "theoretical"` argument to identify outliers. We then use `ev.perc` 
+  argument to specify  the percentage of the theoretical distribution in each tail we consider extreme. 
+  For example `ev.perc = .005` means that we consider any score that is in the bottom
+  0.5% or top 0.5% of a normal distribution  to be an "extreme" value. 
+  You can also use the top and bottom 0.1% (`ev.perc = .001`).
+
+```{r}
+plot(testDistribution(d$Variable1,
+                      extremevalues = "theoretical", ev.perc = .005))
+```
+
+## Removal of outliers
+### Subsetting by IDs
+You can remove extreme values/participants by subsetting data by rows (we learnt this in week 3 workshop). 
+As a refresher, when we subset data by rows, we specify our argument(s) in the `i` section of DT[...].
+If our dataset has a ID variable (most dataset does), you can remove them using the participant ID. 
+For example, let's assume ID 10 is an outlier. We can remove them using `!=` which means `not equal`.
+
+```{r}
+d1 <- d[RandomID != 10]
+```
+
+### Subsetting using z-scores
+Finally, if we assume a variable follows a normal distribution, we may
+use z scores to identify extreme values or outliers using $z \pm 3.29$.
+
+We will need to first create z-score for that variable using the `scale()` function.
+
+```{r}
+d[, ScaledVariable1 := scale(Variable1)]
+```
+
+Check the data using `table()` function. You can see that there is one extreme value based on z score.
+
+```{r}
+table(d$ScaledVariable1 > 3.29)
+table(d$ScaledVariable1 < -3.29)
+```
+
+We can remove it using the code below:
+
+```{r}
+d <- d[ScaledVariable1 <3.29 & ScaledVariable1 > -3.29]
+```
+
+## Winsorising
+Instead of  simply removing the data, we can winsorise them. That means we replace the extreme 
+values with a certain percentile value from each end.
+We can winsorse our variables using the `winsor()` function. Use the `trim` argument to specify how much 
+would like to winsorise top & bottom (e.g, 0.5% or 1%).
+
+```{r}
+d[, Winsored_Variable1 := winsor(Variable1, trim = .005)]
+d[, Winsored_Variable1 := winsor(Variable1, trim = .01)]
+```
+
+## Transformation
+There are two common transformations:
+
+* Log
+* Squared root
+
+We can perform these transformation using `log()` and `sqrt()`.
+
+```{r}
+d[, Log_Variable1 := log(Variable1)]
+d[, Sqrt_Variable1 := sqrt(Variable1)]
+```
+
+**You Try It**
+
+Create two new variables by transforming your variables using `log()` and `sqrt()`.
+
+**Exercise**
+
+Take a quick look at the histogram/distribution of your:
+* Original variable
+* Winsorised
+* Log transformed
+* Sqrt transformed
+
+# Exercises
+Apply what we have learnt today to check assumptions and deal with any violations/outliers 
+for your research report's variables.

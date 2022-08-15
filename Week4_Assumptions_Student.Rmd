@@ -24,8 +24,8 @@ options(digits = 4)
 ```
 
 # Intro
-This week we focus on checking and dealing with assumptions for linear regression and ANOVA.
-We also briefly talk about the `ggplot2` package and learn how to use it to visualise data.
+This week we focus on checking and dealing with assumptions for linear regression and ANOVA and 
+explore a very cool package `ggplot2` in R for data visualisation.
 
 # Packages
 First thing first. Open your R project and load the packages.
@@ -55,52 +55,6 @@ If you don't want to score your own variables and would still like to try the co
 
 ```{r, echo=FALSE}
 
-
-```
-
-# Categorical/Factor variables
-Factor variables in `R` are used to represent categorical data. Factors 
-store data as integer values (i.e., levels) with a corresponding set of character values (i.e., labels) 
-to use when the factor is displayed. While factors look like character vectors, they are actually integers.
-For example, when we make the sex variable a factor variable, male = 0, female = 1, 
-sex will be displayed as male/female in `R`. However, when it is entered into a regression model, 
-`R` will help us do dummy coding. Dummy coding is helpful as you can examine categorical variable 
-in a regression model. That's why we usually convert categorical data into factors.
-
-Let's try this on the `sex` variable. First, take a look at how it is currently coded.
-
-```{r}
-str(d$Sex)
-table(d$Sex)
-```
-
-We create a factor using the `factor()` function.
-
-```{r}
-d[, Sex := factor(
-  Sex,
-  levels = c(0,1),
-  labels = c("Male", "Female"))]
-```
-
-See how it is now after being recoded using the `table()` function.
-
-```{r}
-table(d$Sex)
-```
-
-If you view the datset, you will see that the labels are displayed.
-
-```{r}
-# View(d)
-```
-
-**You Try It**
-
-Convert the `BornAUS` variable into a factor. You can keep the name, or give it a new name.
-
-
-```{r}
 
 ```
 
@@ -277,7 +231,7 @@ We can also use boxplot to check distribution of variables in different groups.
 ```{r}
 ggplot(d,
        aes(
-         x = Sex,
+         x = as.factor(Sex),
          y = Variable1)) + 
   geom_boxplot(color = "#7F7F7F", fill = "#FAF7F3")
 ```
@@ -332,7 +286,7 @@ Check **Homoscedasticity** assumption of your model. Is the assumption met?
 `leveneTest(dv_name ~ iv_name, data = dataset_name)`
 
 ```{r}
-leveneTest(Variable1 ~ Sex, data = d)
+leveneTest(Variable1 ~ as.factor(Sex), data = d)
 ```
 
 # Dealing with Normality and Outliers 

@@ -1,0 +1,220 @@
+---
+title: "Week 5 - Multiple Regression 1"
+author: "Your Name"
+date: "`r Sys.Date()`"
+output: html_document
+
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(kableExtra)
+
+options(digits = 4)
+```
+
+# Intro
+
+This week we learn how conduct correlation test and multple linear regression in `R`.
+
+# Packages
+First thing first. Open your R project and load the packages.
+
+```{r pkg, message=FALSE}
+library(data.table)
+library(psych)
+library(car)
+library(ggplot2)
+library(JWileymisc)
+library(extraoperators)
+```
+
+A few new packages for linear regression models.
+
+```{r, message=FALSE}
+install.packages("lm.beta") # get standardised coefs
+install.packages("visreg") # visualise regression model
+install.packages("olsrr") # check multicolinearity
+
+library(lm.beta)
+library(visreg)
+library(olsrr)
+```
+
+# Data
+Let's start by loading your dataset for *this week tutorial*.
+
+```{r}
+d <- fread("")
+```
+
+# Descriptive statistics
+Before conducting our main analyses, we often report descriptive statistics. 
+We can obtain descriptive statistics using individual functions, 
+but we can also use the `egltable()` function from the `JWileymisc` package, 
+which provides a table of estimated descriptive statistics optionally by group levels.
+
+```{r}
+egltable(c("Inherence_Bias", "Ought_Score", "Belief_in_Just_World", "educ", "RavensProgressiveMatrix_sum", "conserv"), 
+         data = d)
+```
+
+**Tips** 
+
+Always check your data type before running analysis using the `class()` function.
+
+* Continuous variables should be numeric data. 
+* Categorical variables should be factors.
+
+You can convert them to their preferred data type using:
+
+* `as.numeric()` for continuous variables.
+* `as.factor()` for categorical variables.
+
+# Revisting subsetting data
+
+**Exercise**
+
+Subset dataset to include only participants who are not excluded (i.e., we want to keep those
+whose `excluded` variable is 0). Recall that we use `==` to select the values that we want 
+or `!=` to select the values that we do not want.
+
+
+```{r}
+
+```
+
+# Correlation
+Use `cor.test()` function for correlation test.
+
+**Code Template for Correlation Test**
+
+`cor.test(dataset_name$x, dataset_name$y, method = "pearson")`
+
+```{r}
+c <- cor.test(d$Inherence_Bias, d$Ought_Score, method = "pearson")
+c
+```
+
+In the above output,
+
+* **t** is the t-test statistic value 
+* **df** is the degrees of freedom 
+* **p-value** is the significance level of the t-test 
+* **conf.int** is the confidence interval of the correlation coefficient at 95% 
+* **coefficient** is sample estimates
+
+**Sample Write-up**
+Pearson’s correlation coefficient was calculated to examine whether inherence bias and ought inferences 
+are correlated. There was a moderate,
+statistically significant positive relationship between inherence bias and ought inferences, 
+r(XX) = XX, 
+p = XX.
+
+# Multiple Linear Regression
+
+Linear regression in `R` is generally conducted using the `lm()`
+function, which fits a **l**inear **m**odel. The model formula is:
+`outcome ~ predictor`. We can store model result in an object (e.g., `m`) 
+and perform different functions with it.
+
+**Code Template for Multiple Linear Regression Model**
+
+`lm(outcome ~ predictor1 + predictor2, data = dataset_name)`
+
+Here is an example of a multiple regression model. 
+Your model should include all predictors of interest..
+
+```{r}
+m <- lm(Ought_Score ~ Inherence_Bias + Belief_in_Just_World + educ, data = d)
+```
+
+## Summarise model results
+Use `summary()` function to obtain model results.
+
+```{r}
+summary(m)
+```
+
+There are several parts to this output, but the most relevant for this unit may be:
+
+The Coefficients section:
+
+* **Estimate** give the model parameter estimates or regression coefficients (the $b$s). 
+* **Std. Error** gives the standard error (SE) for each coefficient, a measure of
+  uncertainty. 
+* **t value** gives the t-value for each parameter, used to calculate the p-values.
+* **Pr(>|t|)** gives the p-value for each coefficient. The significance codes
+  below are used to indicate what the asterisks mean, but you
+  can interpret the exact p-values yourself.
+* Overall model $R^2$, the proportion
+  of variance in the outcome explained by the model in this specific
+  sample data and the adjusted $R^2$, a better estimate of the true
+  population $R^2$.
+  
+Finally, **F-statistic** and degrees of freedom and p-value are
+  provided at the bottom. The F-test is an overall test of whether the model is
+  statistically significant overall or not. It will test all the
+  predictor(s) simultaneously. In simple regression models, 
+  the p-value for the F-test is identical to the p-value
+  for the t-test of the predictor's coefficient. In multiple regression
+  models, they are not identical.
+  
+## Get confidence intervals
+Use `confint()` function to get 95% confidence intervals.
+
+```{r}
+confint(m)
+```
+
+## Get standardised coefficients
+Use `lm.beta()` function to standardised coefficients.
+
+```{r}
+lm.beta(m)
+```
+
+## Present results in a table
+
+We can get a nicely formatted set of output for a model using the `modelTest()`
+and `APAStyler()` functions. 
+
+```{r}
+APAStyler(modelTest(m))
+```
+
+In the above output,
+
+The "Term" column tells us what we are looking at,
+the "Est" column gives us the values, and the "Type" column is the
+broad category. 
+
+* The first four rows are the results for each predictor, including the estimates, 
+asterisks to indicate p-values, and the 95% confidence intervals in brackets. 
+* **R2** is $R^2$ and **Adj R2** is adjusted $R^2$
+* The last three rows are cohen's $f^2$ effect sizes for each individual 
+predictor along with p-values.
+
+**Sample Write-up**
+A multiple regression model was used to examine the relationship between 
+people’s inherence bias and with their tendency to believe the status quo ought to be.
+When controlling for education level, 
+Raven’s Progressive matrix score, conservatism, and belief in a just world, 
+higher inherence bias significantly predicted higher ought, 
+b = XX, [95% CI XX, XX],p = XX. 
+This was a small effect,  $f^2$ = 0.11.
+
+## Plotting relationships
+
+We can use the `visreg` package to visualise the results
+from the regressions. The defaults gives us the regression line, 
+the 95% confidence intervals, 
+along with the partial residuals. We use the argument `gg = TRUE` to make it
+a ggplot2 graph which lets us do things like customize the theme.
+
+```{r}
+visreg(m, xvar = "Inherence_Bias", gg = TRUE)
+```
+
+# Exercise 
+Apply what you learn today to complete the data worksheet in this week tutorial's software practice.

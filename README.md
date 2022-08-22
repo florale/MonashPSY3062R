@@ -15,3 +15,9 @@ This GitHub repository stores all the resources for the workshops, including HTM
   
 - **Week 4** *Assumptions*.
   Please see [Week4_Assumptions.html](Week4_Assumptions.html).
+
+- **Week 5** *Multiple Regression 1*.
+  Please see [Week5_LM1.html](Week5_LM1.html).
+  
+- **Week 6** *Multiple Regression 2*.
+  Please see [Week6_LM2.html](Week6_LM2.html).

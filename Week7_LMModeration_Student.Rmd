@@ -1,0 +1,282 @@
+---
+title: "Week 7 - Moderated Regression"
+date: "`r Sys.Date()`"
+output: 
+  html_document:
+    theme: sandstone
+    highlight: zenburn
+    toc: yes
+    toc_float: yes
+    collapsed: no
+    smooth_scroll: no
+    toc_depth: 4
+    fig_width: 6
+    fig_height: 4
+    fig_caption: yes
+    number_sections: true
+---
+# Intro
+
+This week we learn how to conduct a moderated regression. 
+Moderated regression is used to examine whether the relationship between a predictor and an outcome 
+depends on / is moderated by a third variable. 
+That is, the moderator $Z$ is a variable that alters the direction and/or strength of 
+the relation between a predictor $X$ and an outcome $Y$.
+
+
+# Packages
+First thing first.
+
+```{r pkg}
+library(data.table)
+library(psych)
+library(car)
+library(ggplot2)
+library(JWileymisc)
+library(extraoperators)
+library(lm.beta)
+library(visreg)
+library(olsrr)
+library(corrplot)
+library(ggsci)
+```
+
+A new package to conduct simple slope analysis.
+
+```{r}
+install.packages("emmeans")
+library(emmeans)
+```
+
+# Data
+We are going to use Tutorial 7's dataset.
+
+```{r}
+d <- fread("")
+```
+
+**Research Questions**
+We are going to use moderation analysis today to address the following questions:
+
+ 1.  Does Sex moderate the relationship between Negative Affect and Positive Affect?
+ 2.  Does Age moderate the relationship between Negative Affect and Positive Affect?
+
+## Data management
+We should make sure our variables have correct data type before runningt the analysis
+
+```{r}
+is.numeric(d$Age)
+is.numeric(d$AvgPosAff)
+is.numeric(d$AvgNegAff)
+
+is.factor(d$Female)
+```
+
+The Female variable is not a factor yet. 
+
+**Exercise**
+Convert `Female` to a factor. Name it `Sex`.
+
+```{r}
+
+```
+
+# Descriptives
+
+**Exercise**
+Check descriptive stastics using the `egltable()`. 
+
+```{r}
+
+```
+
+# Moderation Analysis
+## Mean Centering
+
+It is not mandatory, but is common, when conducting moderated regression to center mean our continuous predictors, 
+which helps with interpretation. We talk about the interpretation in a later bit.
+
+Recall that we use the `scale()` function to create z-score variable. 
+We are going to use the same function to create mean centered variables, 
+with an additional argument `scale = FALSE` to tell `R` that we want mean center, not z-scores. 
+
+**Tips** 
+We mean center our variables after running descriptives and before running our models.
+
+```{r}
+d$AvgNegAff <- scale(d$AvgNegAff, scale = FALSE)
+d$Age <- scale(d$Age, scale = FALSE)
+```
+
+## Models
+Moderation analysis can be conducted by adding one or multiple interaction terms in a regression analysis. 
+For example, if $Z$ is a moderator for the relation between $X$ and $Y$, we fit a model with 
+the interaction term of $X$ and $Z$ as predictor ($X*Z$) and $Y$ as the outcome.
+
+### Model with Categorical moderator
+
+To address the 1st research question, we will run the moderation analysis investigating whether 
+Sex moderates the relationship between Negative Affect and Positive Affect.
+
+```{r}
+mod1 <- lm(AvgPosAff ~ AvgNegAff * Sex, data = d)
+summary(mod1)
+```
+
+### Model with Continuous moderator
+
+**You Try It**
+Run a moderated regression model to test whether 
+Age moderates the relationship between Negative Affect and Positive Affect.
+
+```{r}
+
+```
+
+
+
+```{r}
+summary(mod2)
+```
+
+## Understanding and Interpreting Moderation Analysis
+For every model, our interaction term will be either significant or non-significant.
+
+* For non-sig model, we usually drop the interaction and run a normal multiple regression model. This 
+  model is used to test the main effects of our predictors (effect of one, controlling for the other).
+* For sig model, we usually interpret the models, including both simple and interaction effects, 
+  conduct simple slope analyses, and graph the results.
+
+Let's dive into each scenario.
+
+### Non-significant interaction models
+
+You can see that both `mod1` and `mod2` indicated non-sig interaction results. 
+That means we should drop the interaction and run multiple regression model.
+
+```{r}
+m1 <- lm(AvgPosAff ~ AvgNegAff + Sex, data = d)
+m2 <- lm(AvgPosAff ~ AvgNegAff + Age, data = d)
+```
+
+Look at results of model 1 as an example.
+
+```{r}
+summary(m1)
+```
+
+
+In the above output, 
+
+We can see that there is significant effect of Negative Affect, 
+but not Sex and Age in model 1 and 2, respectively. We can interpret these results just like how we 
+do with multiple regression. See below for a sample write-up for the first research question.
+
+**Sample Write-up for Non-sig Moderated Regression**
+A moderated regression model was used to examine the moderating role of sex in the relationship between 
+negative affect and positive affect. The results were nonsignificant, showing that relationship between 
+negative affect and positive affect does not differ between males and females, 
+(b =  [95% CI ], p = ). 
+
+The interaction term was dropped and a multiple regression model was conducted to test the main effects of negative affect and sex. 
+When controlling for sex, higher negative affect significantly predicted lower positive affect, 
+b =  [95% CI ], p = . 
+When controlling for negative affect, there is no difference in positive affect between males and females, 
+b =  [95% CI ], p = . 
+
+
+### Significant interaction models
+Both our models are not significant. But for teaching purposes, 
+we are will go ahead and interpret them as if the interaction terms are significant. 
+Accordingly, we will interpret both simple effects and interaction effects.
+
+Let's look at results of model 2 as an example.
+
+```{r}
+summary(mod2)
+```
+
+**Simple effects**
+
+Simple effect is the effect of one predictor conditioned on the level of another predictor (usually 0). 
+That is, the relationship between predictor and outcome, when the the moderator is held at 0. 
+Sometimes, a value of 0 doesn't exist in our data or is not meaningful (e.g., age of 0). 
+When we mean center our predictors, a value of 0 is the mean. Our interpretation then becomes 
+the association between the predictor and the outcome when the moderator is held at the mean.
+
+* For example, in the above output, the simple effect of `AvgNegAff` shows that 
+  higher negative affect was associated with lower positive affect at the mean age.
+
+#### Simple slope analysis
+When there is significant interaction term, we usually follow up with a simple slope analysis to examine 
+the differences between the relationship between our predictor and outcome at different levels of the moderator.
+
+**For continuous moderators**, we can choose different levels of the moderator for the simple slope analyses, 
+such as:
+
+* M - 1SD and M + 1SD
+* 25th and 75th percentile
+* Clinically-established cut-off scores
+
+**For categorical moderators**, we usually conduct simple slope analyses for each level of the variable 
+(e.g, males and females).
+
+To test the simple slopes, we can use the `emtrends()` from the package `emmeans`.
+
+**Code Template for Simple slope analysis**
+`emtrends(model_name, var = "predictor", specs = ~ predictor | moderator, at = list (moderator = c(M-1SD   M+1SD)))`
+
+```{r}
+# Our predictor has been mean centered, which means M - 1 SD is -1 and M + 1 SD is 1. 
+simple_slope <- emtrends(mod2, var = "AvgNegAff",
+                   specs = ~ AvgNegAff | Age,
+                   at = list (Age = c(-1 , 1)))
+```
+
+Summarise our results. We add `infer= TRUE` argument to show p-values.
+
+```{r}
+summary(simple_slope, infer = TRUE)
+```
+
+These results are significant, showing that the there was negative relationships between 
+negative affect and positive affect at both levels of age. 
+This also means that the relationships did not depend on age / differ between levels of age 
+(they are both negative).
+
+#### Visualising simple slopes
+
+We can use the `visreg` package to graph the simple slopes. 
+Recall that we used mean-centered predictors, but we may want to present the real values in our graph. 
+To do this, we calculate the M - SD and M + SD values and manually specify them in our graph.
+
+```{r}
+22.62 - 4.13
+22.62 + 4.13
+```
+
+
+```{r}
+visreg(mod2, 
+       xvar = "AvgNegAff", by = "Age",
+       breaks = c(-1, 1), 
+       overlay = TRUE, partial = FALSE, band = FALSE, rug = FALSE, gg = TRUE) +
+  scale_color_manual(labels = c("-1" = "18.5", "1" = "26.8"), values = c("yellow", "blue"))
+
+```
+
+These results are not significant, but if they are, we can write them up as below.
+
+**Sample Write-up for Sig Moderated Regression**
+
+A moderated regression model was used to examine the moderating role of age in the relationship between 
+negative affect and positive affect. 
+The results were "significant", (b =  [95% CI ], p = ). 
+Simple slopes analysis was conducted to examine the 
+association between negative affect and positive affect 
+at low (M - 1SD) and high (M + 1 SD) levels of age. 
+There was a significant, negative relationship between negative affect and positive affect,
+for younger young adults (aged 18.5 years) (b =  [95% CI ], p = ) 
+and older young adults (aged 26.8 years) (b =  [95% CI ], p = ). 
+A graph of the interaction showed that this relationship in older young adults 
+is stronger than in younger young adults.

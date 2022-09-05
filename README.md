@@ -21,3 +21,21 @@ This GitHub repository stores all the resources for the workshops, including HTM
   
 - **Week 6** *Multiple Regression 2*.
   Please see [Week6_LM2.html](Week6_LM2.html).
+
+- **Week 7** *Moderated Regression*.
+  Please see [Week7_LMModerated.html](Week7_LMModerated.html).
+  
+- **Week 8** *ANOVA 1*.
+  Please see [Week8_ANOVA1.html](Week8_ANOVA1.html).
+  
+- **Week 9** *ANOVA 2*.
+  Please see [Week8_ANOVA2.html](Week8_ANOVA2.html).
+  
+- **Week 10** *Hierarchical Linear Regression*.
+  Please see [Week10_LMHierarchical.html](Week10_LMHierarchical.html).
+  
+- **Week 11** *Data Visualisation*.
+  Please see [Week11_DataVisualisation.html](Week11_DataVisualisation.html).
+  
+- **Week 12** *General Programming in `R`*.
+  Please see [Week12_Programming.html](Week12_Programming.html).

@@ -1,0 +1,257 @@
+---
+title: "Week 6 - Multiple Regression 2"
+date: "`r Sys.Date()`"
+output: 
+  html_document:
+    theme: sandstone
+    highlight: zenburn
+    toc: yes
+    toc_float: yes
+    collapsed: no
+    smooth_scroll: no
+    toc_depth: 4
+    fig_width: 6
+    fig_height: 4
+    fig_caption: yes
+    number_sections: true
+---
+
+# Intro
+
+This week we continue our lessons on multiple regression, 
+including checking assumptions and running regression models with categorical variables.
+
+
+# Packages
+First thing first. Open your R project and load the packages.
+
+```{r pkg}
+library(data.table)
+library(psych)
+library(car)
+library(ggplot2)
+library(JWileymisc)
+library(extraoperators)
+library(lm.beta)
+library(visreg)
+library(olsrr)
+```
+
+A new package to help test multicollinearity.
+
+```{r}
+install.packages("corrplot")
+library(corrplot)
+```
+
+# Data
+Let's start by loading a dataset for this week called "week6_dataset.csv".
+
+```{r}
+d <- fread("")
+```
+
+# Assumptions for Multiple Regression Models
+**Exercise**
+Run a regression model called `m1` predicting Variable1 from Variable2 and Variable3.
+
+```{r}
+m1 <- lm(Variable1 ~ Variable2 + Variable3, data = d)
+```
+
+Refer to week 4 workshop for parametric assumptions. 
+We will revisit some assumptions that are specific to linear regression models.
+
+## Linearity and Homoscedasticity
+
+Residual vs predicted plot is commonly used to examine linearity and homoscedasticity.
+
+Two parts of this plot:
+
+* Linearity - a straight red line. 
+* Homoscedasticity - scores should be equally spread around the red line
+
+**Interpreting R Plot**
+Assumptions are met when the red line is flat and horizontal (linearity)
+and the data points are equally and randomly spread (homoscedasticity).
+
+```{r}
+plot(m1, 1)
+```
+
+Alternatively you can use the scale-location plot to examine homoscedasticity. It plots 
+the square rooted **standardized** residual vs. predicted values.
+
+**Interpreting R Plot**
+Assumption is met when the data points data points are equally and randomly spread.
+
+```{r}
+plot(m1, 3)
+```
+
+## Normality of Residuals
+Normality of Residuals can be examined by plotting the standardised residuals using a QQ plot.
+
+**Interpreting R Plot**
+Assumption is met when the data points observations fall along the diagonal straight line.
+
+```{r}
+plot(m1, 2)
+```
+
+## Multicollinearity
+Several ways to check for multicollinearity:
+
+* Correlation Matrix
+* Variance Inflation Factors (VIF)
+
+### Correlation Matrix
+We can use the `cor()` and `corrplot()` functions to create a plot of a correlation matrix.
+
+**Interpreting R Plot**
+Multicollinearity is indicated when the correlation between two (predictor) variables is below -0.9 or above +0.9 
+
+```{r}
+corrplot(cor(d[, .(Variable2, Variable3, Variable1)]), method = "number")
+```
+
+### Variance Inflation Factors
+We can use the `ols_vif_tol()` function from the `olsrr` package to calculate the 
+Tolerance and the Variance Inflation Factor values.
+
+**Interpreting R Output**
+Multicollinearity may be indicated when VIF > 10.
+
+```{r}
+ols_vif_tol(m1)
+```
+
+# Multiple Regression with Continuous and Categorical Predictors
+## Dummy Coding - Categorical/Factor variables
+Factor variables in `R` are used to represent categorical data. Factors 
+store data as integer values (i.e., levels) with a corresponding set of character values (i.e., labels) 
+to use when the factor is displayed. While factors look like character vectors, they are actually integers.
+For example, when we make the sex variable a factor variable, by setting male = 0 and female = 1, 
+sex variable will be displayed as male/female in `R`. However, when it is entered into a regression model, 
+`R` will help us do dummy coding. Dummy coding is helpful as you can examine categorical variable 
+in a regression model. That's why we usually convert categorical data into factors.
+
+Let's try this on the `Sex` variable. First, take a look at how it is currently coded 
+using the `table()` function.
+
+```{r}
+class(d$Sex)
+table(d$Sex)
+```
+
+We create a factor using the `factor()` function.
+
+```{r}
+d[, Sex := factor(
+  Sex,
+  levels = c(0,1),
+  labels = c("Male", "Female"))]
+```
+
+See how it is now after being recoded.
+
+```{r}
+class(d$Sex)
+table(d$Sex)
+```
+
+In the datset, we can see that the labels, rather than levels, are displayed.
+
+```{r}
+View(d)
+```
+
+**You Try It**
+Convert the `BornAUS` variable into a factor. You can keep the name, or give it a new name.
+
+
+```{r}
+
+```
+
+## Create Categorical Variables from Continuous Variables
+
+As an example, I assigned marks to participants by creating a variable called `Mark` in the dataset `d` 
+which has random values from 1 to 100. This variable is numeric data.
+
+```{r}
+d[, Mark := rep(sample(0:100), length.out = nrow(d))]
+```
+
+We can create a new categorical variable called `Grade.` that group
+these people according to their marks using the `cut()` function.
+
+```{r}
+d[, Grade := cut(Mark,
+                 breaks = c(-Inf, 49.99, 59.99, 69.99, 79.99, Inf),
+                 labels = c("N", "P", "C", "D", "HD"))]
+```
+
+
+```{r}
+table(d$Grade)
+```
+
+## Changing the reference level of a factor
+
+Factors in `R` come in two varieties: ordered (e.g., small, medium, large) 
+and unordered (e.g., rose, daisy, lavender). For dummy variables, it is often helpful to set 
+a reference level or "baseline" value. For example, consider our categorical predictor variable 
+"Sex" with levels "Male" and "Female". If "Male" is our reference, the model outout for regression 
+will give us a coefficient for "Female", which can be interpreted as the difference in the 
+outcome between Female and Male.
+
+When there are more than two levels, this reference level becomes more useful for interpretation.
+For example, we may have a specific group that we want to compare against the other groups.
+Let's take a look at the Alcohol Risk Category variable in the PSY3062 dataset.
+
+```{r}
+class(d$AUDITCat)
+```
+
+Since it is "character" variable, not a integer variable as "Sex", we can't assign levels/labels to it. 
+We will go head to convert it to a factor.
+
+```{r}
+d$AUDITCat <- as.factor(d$AUDITCat)
+str(d$AUDITCat)
+```
+
+This works fine, but what if we want to compare all groups with the "At risk" group?
+
+```{r}
+d[, AUDITCat := relevel(AUDITCat, ref = "At Risk")]
+str(d$AUDITCat)
+```
+
+## Our model
+
+```{r}
+m2 <- lm(Variable1 ~ Variable2 + AUDITCat, data = d)
+summary(m2)
+```
+
+In the above output, 
+
+  You can see that there is no row showing result for the At Risk group. This is because in the model,
+  each dummy variable (Abstainer and Moderate, respectively) is compared with the reference group (At Risk).
+  The coefficients tell us the difference in the outcome (Variable1) between the each group (dummy = 1)
+  and the reference group (dummy = 0). 
+  These results are not significant, but if they are, we can write them up as below.
+
+
+**Sample Write-up for Dummy variables**
+A multiple regression model was used to examine whether Variable2 and Alcohol Risk predict Variable1.
+The results showed that, 
+Abstainer had XXlower Variable1 
+than the At Risk group
+[95% CI ], p = .
+The Moderate group also had lower Variable1 than the At Risk group 
+(b = , [95% CI ], p = ). 
+
+*Notes. Results are not significant, this write-up is only for teaching purposes.*

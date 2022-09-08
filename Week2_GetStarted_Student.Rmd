@@ -2,20 +2,8 @@
 title: "Week 2 - Getting Started"
 author: "Your Name"
 date: "`r Sys.Date()`"
-output: 
-  html_document:
-    theme: sandstone
-    highlight: zenburn
-    css: "florastheme.css"
-    toc: yes
-    toc_float: yes
-    collapsed: no
-    smooth_scroll: no
-    toc_depth: 4
-    fig_width: 6
-    fig_height: 4.5
-    fig_caption: yes
-    number_sections: true
+output: html_document
+
 ---
 
 ```{r setup, include=FALSE}
@@ -30,7 +18,7 @@ options(digits = 2)
 
 This week we learn about some basic, but important features in R. This is a R markdown (.Rmd). 
 R markdowns are great for reproducibility, as we can explain and document our work using notes, comments, 
-codes, and outputs. R markdowns can be knitted into html files which are 
+code, and outputs. R markdowns can be knitted into html files which are 
 easier to follow compared to an R script (e.g., `Week2_GetStarted.R`).
 
 Use the `.Rmd` files during the workshops to follow along and practise coding, and read `.html` files independently in your own time.
@@ -101,7 +89,6 @@ Every time you create an object, check the environment pane to make sure that it
 
 ```{r vars}
 myclass <- "PSY3062"
-myclass
 ```
 
 **You Try It**
@@ -159,7 +146,7 @@ series
 Create a new variable call `j` and assign 5 numbers to it.
 
 ```{r}
-
+j <- c(1, 2, 3, 4, 5)
 ```
 
 Missing values in R are denoted by `NA` and/or `NaN`.
@@ -184,6 +171,7 @@ Check what type `mtcars` is. You can see that it is a data frame.
 ```{r dataframe2}
 class(mtcars)
 ```
+
 There are several useful functions to explore a data frame.
 
 * `head()` - see first 5 rows
@@ -201,7 +189,7 @@ Explore `mtcars` using the above functions.
  2. How many columns?
 
 ```{r}
-
+nrow(mtcars)
 ```
 
 ## Loading data in R
@@ -228,13 +216,17 @@ Your dataset `d` should appear in the environment panel.
 
 ```{r}
 # example for Macs
-d <- read.csv("/Users/florale/Library/CloudStorage/OneDrive-MonashUniversity/Work/MonashTA/2022_PSY3062/PSY3062 dataset.csv")
+#d <- read.csv("/Users/florale/Library/CloudStorage/OneDrive-MonashUniversity/Work/MonashTA/2022_PSY3062/PSY3062 dataset.csv")
 
 # example for Windows
 #d <- read.csv("C:/Users/florale/Downloads/PSY3062 dataset.csv")
 
 ## check class
 class(d)
+
+# load your own dataset
+d <- read.csv("Put your file path here")
+
 ```
 
 # Functions

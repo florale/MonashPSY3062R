@@ -2,20 +2,7 @@
 title: "Week 3 - Working with Data 1 and Scoring"
 author: "Your Name"
 date: "`r Sys.Date()`"
-output: 
-  html_document:
-    theme: sandstone
-    highlight: zenburn
-    css: "florastheme.css"
-    toc: yes
-    toc_float: yes
-    collapsed: no
-    smooth_scroll: no
-    toc_depth: 4
-    fig_width: 6
-    fig_height: 4.5
-    fig_caption: yes
-    number_sections: true
+output: html_document
 ---
 
 ```{r setup, include=FALSE}
@@ -108,7 +95,7 @@ identical(d, d0)
 
 Let's quickly inspect `d`. You can also view by clicking on `d` in your environment pane
 
-```{r checkd1, eval=FALSE}
+```{r checkd1}
 head(d)
 ```
 
@@ -179,7 +166,7 @@ Get the first row from `d`. Key word here is row.
 We need to provide `i` with the row index that we are after. 
 This returns a data table d with all columns at the first row.
 
-```{r subset, eval=FALSE}
+```{r subset}
 d[1, ]
 ```
 
@@ -197,7 +184,7 @@ We can also create sequence of numbers using `:`.
 Get the first column from `d`. Because we are selecting columns, we provide `j` with the column 
 indices that we are after.
 
-```{r, eval=FALSE}
+```{r}
 d[ , 1]
 ```
 
@@ -213,7 +200,7 @@ Subset columns 1, 2, 3, 8, 9 from `d`.
 We can also subset using the names of the variables. For example, we only want variable `pc1` and `pc2`.
 This is helpful when we know the variable names, but we don't know which column indices they are.
 
-```{r, eval=FALSE}
+```{r}
 d[, .(pc1, pc2)]
 ```
 
@@ -232,7 +219,7 @@ We can check for missing data using the `is.na()` function.
 This shows us where pc1 has missing data. We are performing this task in the first section of the
 squared brackets `i`, which means that we are subsetting rows .
 
-```{r missing, eval=FALSE}
+```{r missing}
 d[is.na(pc1)]
 ```
 
@@ -326,7 +313,7 @@ There are two ways to calculate the total score:
   Recall when this happened to us trying to calculating the sum of 
   the `x` vector that contains a missing value last week.
 * Another approach is using `rowMeans()` function. We use `rowMeans()` to get an average score. 
-  We then get back to the "sum" scale by multiple the result to the number of items 
+  We then get back to the "sum" scale by multiply the result to the number of items 
   (e.g., 10 if a scale has 10 items). This works well if we have missing value on a small number of 
   items, as we can keep participants with small amount of missing data. This doesn't work if the 
   participants have missing data on all items (obviously).

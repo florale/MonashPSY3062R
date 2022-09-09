@@ -23,7 +23,7 @@ This GitHub repository stores all the resources for the workshops, including HTM
   Please see [Week6_LM2.html](Week6_LM2.html).
 
 - **Week 7** *Moderated Regression*.
-  Please see [Week7_LMModerated.html](Week7_LMModerated.html).
+  Please see [Week7_LMModeration.html](Week7_LMModeration.html).
   
 - **Week 8** *ANOVA 1*.
   Please see [Week8_ANOVA1.html](Week8_ANOVA1.html).

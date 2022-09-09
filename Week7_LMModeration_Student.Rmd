@@ -62,7 +62,7 @@ We are going to use moderation analysis today to address the following questions
  2.  Does Age moderate the relationship between Negative Affect and Positive Affect?
 
 ## Data management
-We should make sure our variables have correct data type before runningt the analysis
+We should make sure our variables have correct data type before running the analysis
 
 ```{r}
 is.numeric(d$Age)
@@ -84,7 +84,7 @@ Convert `Female` to a factor. Name it `Sex`.
 # Descriptives
 
 **Exercise**
-Check descriptive stastics using the `egltable()`. 
+Check descriptive statistics using the `egltable()`. 
 
 ```{r}
 
@@ -126,7 +126,7 @@ summary(mod1)
 ### Model with Continuous moderator
 
 **You Try It**
-Run a moderated regression model to test whether 
+Run a moderated regression model `mod2` to test whether 
 Age moderates the relationship between Negative Affect and Positive Affect.
 
 ```{r}
@@ -169,7 +169,7 @@ summary(m1)
 In the above output, 
 
 We can see that there is significant effect of Negative Affect, 
-but not Sex and Age in model 1 and 2, respectively. We can interpret these results just like how we 
+but not Sex. We can interpret these results just like how we 
 do with multiple regression. See below for a sample write-up for the first research question.
 
 **Sample Write-up for Non-sig Moderated Regression**
@@ -183,7 +183,6 @@ When controlling for sex, higher negative affect significantly predicted lower p
 b =  [95% CI ], p = . 
 When controlling for negative affect, there is no difference in positive affect between males and females, 
 b =  [95% CI ], p = . 
-
 
 ### Significant interaction models
 Both our models are not significant. But for teaching purposes, 
@@ -229,8 +228,8 @@ To test the simple slopes, we can use the `emtrends()` from the package `emmeans
 ```{r}
 # Our predictor has been mean centered, which means M - 1 SD is -1 and M + 1 SD is 1. 
 simple_slope <- emtrends(mod2, var = "AvgNegAff",
-                   specs = ~ AvgNegAff | Age,
-                   at = list (Age = c(-1 , 1)))
+                         specs = ~ AvgNegAff | Age,
+                         at = list (Age = c(-1 , 1)))
 ```
 
 Summarise our results. We add `infer= TRUE` argument to show p-values.
@@ -261,7 +260,7 @@ visreg(mod2,
        xvar = "AvgNegAff", by = "Age",
        breaks = c(-1, 1), 
        overlay = TRUE, partial = FALSE, band = FALSE, rug = FALSE, gg = TRUE) +
-  scale_color_manual(labels = c("-1" = "18.5", "1" = "26.8"), values = c("yellow", "blue"))
+  scale_color_manual(labels = c("-1" = "18.5", "1" = "26.8"), values = c("red", "blue"))
 
 ```
 

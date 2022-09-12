@@ -68,39 +68,40 @@ Residual vs predicted plot is commonly used to examine linearity and homoscedast
 
 Two parts of this plot:
 
-* Linearity - a straight red line. 
-* Homoscedasticity - scores should be equally spread around the red line
+* Linearity - a red line. 
+* Homoscedasticity - black-white dots representing data points.
 
-**Interpreting R Plot**
-Assumptions are met when the red line is flat and horizontal (linearity)
-and the data points are equally and randomly spread (homoscedasticity).
-
-```{r}
+```{r, fig.align="center"}
 plot(m1, 1)
 ```
 
+**Interpreting R Plot**
+
+Assumptions are met when the red line is flat and horizontal (linearity)
+and the data points are equally and randomly spread (homoscedasticity).
+
 Alternatively you can use the scale-location plot to examine homoscedasticity. It plots 
 the square rooted **standardized** residual vs. predicted values.
-
-**Interpreting R Plot**
-Assumption is met when the data points data points are equally and randomly spread.
 
 ```{r}
 plot(m1, 3)
 ```
 
+**Interpreting R Plot**
+Homoscedasticity Assumption is met when the data points are equally and randomly spread.
+
 ## Normality of Residuals
 Normality of Residuals can be examined by plotting the standardised residuals using a QQ plot.
-
-**Interpreting R Plot**
-Assumption is met when the data points observations fall along the diagonal straight line.
 
 ```{r}
 plot(m1, 2)
 ```
 
+**Interpreting R Plot**
+Normality of Residuals Assumption is met when the data points observations fall along the diagonal straight line.
+
 ## Multicollinearity
-Several ways to check for multicollinearity:
+Several ways to check for multicollinearity, including:
 
 * Correlation Matrix
 * Variance Inflation Factors (VIF)
@@ -108,23 +109,91 @@ Several ways to check for multicollinearity:
 ### Correlation Matrix
 We can use the `cor()` and `corrplot()` functions to create a plot of a correlation matrix.
 
-**Interpreting R Plot**
-Multicollinearity is indicated when the correlation between two (predictor) variables is below -0.9 or above +0.9 
-
 ```{r}
-corrplot(cor(d[, .(Variable2, Variable3, Variable1)]), method = "number")
+corrplot(cor(d[, .(Variable1, Variable2, Variable3)]), method = "number")
 ```
 
+**Interpreting R Plot**
+Multicollinearity is indicated
+when the correlation between two (predictor) variables is below -0.9 or above +0.9.
+
 ### Variance Inflation Factors
+
 We can use the `ols_vif_tol()` function from the `olsrr` package to calculate the 
 Tolerance and the Variance Inflation Factor values.
-
-**Interpreting R Output**
-Multicollinearity may be indicated when VIF > 10.
 
 ```{r}
 ols_vif_tol(m1)
 ```
+
+**Interpreting R Output**
+Multicollinearity may be indicated when VIF > 10.
+
+## Bivariate and Multivariate Outliers
+
+We learnt how to inspect univariate outliers during week 4. 
+For multiple regression, we also check for either bivariate or multivariate outliers.
+
+* For bivariate outliers, we can simply use the scatter plot.
+* For multivariate outliers, we can use Cook's distance.
+
+### Cook's distance
+
+Chart of Cook’s distance `ols_plot_cooksd_chart()` can be used to detect observations that strongly influence fitted values of the model. 
+A data point having a large Cook’s D indicates that the data point strongly influences the fitted values.
+
+```{r}
+ols_plot_cooksd_chart(m1)
+```
+
+If we want a list of participants with outliers, we can use this code 
+`subset(ols_prep_outlier_obs(ols_prep_cdplot_data(model_name)), color == "outlier")`. 
+The `obs` column indicate the IDs of participants with outliers. 
+
+```{r}
+subset(ols_prep_outlier_obs(ols_prep_cdplot_data(m1)), color == "outlier")
+```
+
+As a rule of thumb, Cook's Distance over $4/n$ (where n is sample size) is considered to be an outlier. 
+We can also obtain this value using this code `ols_prep_cdplot_data(model_name)$ts`. 
+
+```{r}
+ols_prep_cdplot_data(m1)$ts
+```
+
+**Interpreting R Output**
+Although the threshold for Cook's D for our data is `r ols_prep_cdplot_data(m1)$ts`, 
+it is mostly used to enhance graphical displays. 
+We may consider a data point as outlier with "values of D that are substantially larger than the rest". 
+In this case, I would be inclined to remove ID 101, possibly 277 and 377 as outliers.
+
+**Tips**
+Always check for univariate and either bivarite or multivariate outliers 
+for your multiple regression model.
+
+## Assumptions - Putting it all together
+
+We can use the `ols_plot_diagnostics()` function from the `olsrr` package to obtain many 
+relevant plots for checking assumptions. Plots that may be helpful include:
+
+* Residual vs Predicted Values - Linearity and Homoscedasticity
+* Normal Q-Q Plot & Residual Histogram - Normality of Residuals
+* Cook's D Chart - Multivariate Outliers
+
+```{r, fig.align='center', fig.width=8, fig.height=5}
+ols_plot_diagnostics(m1)
+```
+
+
+**Tips** 
+
+Assumptions checking for Multiple Regression:
+
+* Normality of Outcome Variable
+* Normality of Residuals
+* Linearity 
+* Homoscedasticity
+* Univariate and Bivariate/Multivariate Outliers
 
 # Multiple Regression with Continuous and Categorical Predictors
 ## Dummy Coding - Categorical/Factor variables

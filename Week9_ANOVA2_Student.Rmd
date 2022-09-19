@@ -136,8 +136,15 @@ We can treat an interaction ANOVA model just like how we do with moderated regre
 **EFFECTS OF THE DAY**
 
 * **Main Effects** The effect of one predictor, ignoring (controlling for) the other predictor.
-* **Simple Effects** The effect of one predictor, conditioned on the level of another predictor (usually 0). 
+  In this example, it is the mean difference in Variable1 between Alcohol Consumption groups, 
+  ignoring whether someone is male or female. In other words, we compare the mean of the three
+  Alcohol Consumption groups, averaged across sexes.
+* **Simple Effects** The effect of one predictor, conditioned on the level of another predictor. 
+  In this example, it is the mean difference in Variable1 between Alcohol Consumption groups, 
+  for males and females, respectively.
 * **Interaction Effects**  The effect of one predictor, dependent on the level of another predictor. 
+  It concerns with how Variable1 differs based on levels of Alcohol Consumption 
+  and whether someone is male or female.
 
 ### Non-significant two-way ANOVA
 As usual, we drop the interaction and run multiple regression/ANOVA model.

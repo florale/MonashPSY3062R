@@ -29,7 +29,7 @@ This GitHub repository stores all the resources for the workshops, including HTM
   Please see [Week8_ANOVA1.html](Week8_ANOVA1.html).
   
 - **Week 9** *ANOVA 2*.
-  Please see [Week8_ANOVA2.html](Week8_ANOVA2.html).
+  Please see [Week9_ANOVA2.html](Week9_ANOVA2.html).
   
 - **Week 10** *Hierarchical Linear Regression*.
   Please see [Week10_LMHierarchical.html](Week10_LMHierarchical.html).

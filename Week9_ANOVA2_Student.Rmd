@@ -1,0 +1,213 @@
+---
+title: "Week 9 - Factorial ANOVA"
+date: "`r Sys.Date()`"
+output: 
+  html_document:
+    theme: sandstone
+    highlight: zenburn
+    toc: yes
+    toc_float: yes
+    collapsed: no
+    smooth_scroll: no
+    toc_depth: 4
+    fig_width: 6
+    fig_height: 4
+    fig_caption: yes
+    number_sections: true
+---
+# Intro
+
+This week we learn how to conduct factorial analysis of variance (ANOVA), 
+specifically two-way ANOVA (ANOVA with two factors).
+
+# Packages
+
+```{r pkg}
+library(data.table)
+library(psych)
+library(car)
+library(ggplot2)
+library(JWileymisc)
+library(extraoperators)
+library(lm.beta)
+library(visreg)
+library(olsrr)
+library(corrplot)
+library(ggsci)
+library(emmeans)
+library(effectsize)
+library(onewaytests)
+```
+
+A new package (again) that helps with getting descriptives by groups.
+
+```{r}
+install.packages("dplyr")
+library(dplyr)
+```
+
+# Data
+
+```{r}
+d <- fread("week6_dataset.csv")
+```
+
+**Research Questions**
+We are going to use ANOVA to address the following question: 
+* Does Variable1 vary according to Alcohol Risk and Sex?
+
+## Data management
+Check data types of the main variables. 
+
+```{r}
+is.numeric(d$Variable1)
+is.factor(d$AUDITCat)
+is.factor(d$Sex)
+```
+
+Again, as we just reloaded our dataset, `AUDITCat` and `Sex` are not factors yet. 
+Now quickly convert them.
+
+```{r}
+d[, AUDITCat := as.factor(AUDITCat)]
+
+d[, Sex := factor(
+  Sex,
+  levels = c(0,1),
+  labels = c("Male", "Female"))]
+```
+
+Check data type again to make sure it works.
+
+```{r}
+class(d$AUDITCat)
+class(d$Sex)
+```
+
+# Descriptive Statistics
+We are going to use package `dplyr` to get our descriptive statistics.
+
+```{r}
+d %>%
+  group_by(AUDITCat, Sex) %>%
+  summarise(
+    count = n(),
+    mean = mean(Variable1, na.rm = TRUE),
+    sd = sd(Variable1, na.rm = TRUE)
+  )
+```
+
+# ANOVA Model
+
+As usual, `aov()` function can be used to fit an ANOVA model to answer our research question: 
+*Are there sex differences in Variable1 across Alcohol Risk Categories?*
+
+A two-way ANOVA requires us to include an interaction term between the two categorical variables.
+
+**Exercise**
+* Run a ANOVA model called `m0` using `aov()` function that include an interaction term 
+  between `AUDITCat` and `Sex`. 
+* Run a LM model called `m` using `lm()` function that include an interaction term 
+  between `AUDITCat` and `Sex`. 
+
+```{r}
+m0 <- 
+m <- 
+```
+
+Summarise our model results. 
+
+```{r}
+summary(m0)
+```
+
+
+```{r}
+Anova(m)
+```
+
+## Understanding and Interpreting Two-way ANOVA
+We can treat an interaction ANOVA model just like how we do with moderated regression.
+
+* For non-sig model, it's a common practice to drop the interaction and run a normal model 
+  to test the main effects of our predictors.
+* For sig model, we interpret the interaction effect, conduct pairwise comparison, and graph the results.
+
+**EFFECTS OF THE DAY**
+
+* **Main Effects** The effect of one predictor, ignoring (controlling for) the other predictor.
+* **Simple Effects** The effect of one predictor, conditioned on the level of another predictor (usually 0). 
+* **Interaction Effects**  The effect of one predictor, dependent on the level of another predictor. 
+
+### Non-significant two-way ANOVA
+As usual, we drop the interaction and run multiple regression/ANOVA model.
+
+```{r}
+mns <- lm(Variable1 ~ AUDITCat + Sex, data = d)
+summary(mns)
+```
+
+We can write up this model like a non-sig moderated regression/ANOVA. 
+**See week 7 and 8 for sample write ups.**
+
+### Significant two-way ANOVA
+When our model is significant, we interpret interaction effect. 
+A significant p-value in an ANOVA test shows that some of the group means differ, 
+but we don’t know which pairings of groups differ. 
+*Multiple* pairwise comparisons can be performed to see if the mean differences 
+between certain pairs of groups are statistically significant.
+
+#### Pairwise comparison
+##### Pairwise comparison for the interaction effect.
+First, we obtain the estimated marginal means using `emmeans()`.
+
+```{r}
+em <- emmeans(m, c("AUDITCat", "Sex"), adjust = "bonferroni")
+```
+
+We can then obtain our multiple pairwise comparisons by summarising the results. 
+
+```{r}
+summary(em , infer = TRUE)
+```
+
+We can get all simple main-effect comparisons using the code below. 
+We get two contrasts, one for Alcohol Consumption and one for Sex.
+
+```{r}
+contrast(em, "consec", simple = "each")
+```
+
+##### Pairwise comparison for the main effects.
+Works the same as post-hoc analyses for one-way ANOVA.
+
+* Main effect of Alcohol Consumption
+
+```{r}
+emmeans(m, pairwise ~ AUDITCat)
+```
+
+* Main effect of Sex
+
+```{r}
+emmeans(m, pairwise ~ Sex)
+```
+
+#### Visualising resutls
+As usual, `visreg` can be used to graph the results from the `lm` model. 
+Here, we separate our results by males and females.
+
+```{r}
+visreg(m,
+       xvar = "AUDITCat", by = "Sex",
+       overlay = FALSE, partial = FALSE, band = TRUE, rug = FALSE, gg = TRUE) +
+  ylab("Variable1") + xlab("Alcohol Consumption")
+```
+
+Alternatively, we can use the `emmip()` function to graph our result. 
+We now separate our results by levels of alcohol consumption
+
+```{r}
+emmip(em, ~ Sex | AUDITCat, CIs = TRUE) +
+  ylab("Variable1") + xlab("Alcohol Consumption")
+```

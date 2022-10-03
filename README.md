@@ -31,8 +31,8 @@ This GitHub repository stores all the resources for the workshops, including HTM
 - **Week 9** *ANOVA 2*.
   Please see [Week9_ANOVA2.html](Week9_ANOVA2.html).
   
-- **Week 10** *Hierarchical Linear Regression*.
-  Please see [Week10_LMHierarchical.html](Week10_LMHierarchical.html).
+- **Week 10** *Model Comparison*.
+  Please see [Week10_ModelComparison.html](Week10_ModelComparison.html).
   
 - **Week 11** *Data Visualisation*.
   Please see [Week11_DataVisualisation.html](Week11_DataVisualisation.html).

@@ -1,0 +1,166 @@
+---
+title: "Week 10 - Model Comparison"
+date: "`r Sys.Date()`"
+output: 
+  html_document:
+    theme: sandstone
+    highlight: zenburn
+    toc: yes
+    toc_float: yes
+    collapsed: no
+    smooth_scroll: no
+    toc_depth: 4
+    fig_width: 6
+    fig_height: 4
+    fig_caption: yes
+    number_sections: true
+---
+
+# Intro
+
+This week we address the basic level of model comparison for 
+nested model (hierarchical regression) and non-nested models.
+
+# Packages
+
+```{r pkg, message=FALSE}
+library(data.table)
+library(psych)
+library(car)
+library(ggplot2)
+library(JWileymisc)
+library(extraoperators)
+library(lm.beta)
+library(visreg)
+library(olsrr)
+library(corrplot)
+library(ggsci)
+library(emmeans)
+library(effectsize)
+library(onewaytests)
+library(dplyr)
+```
+
+# Data
+
+```{r}
+d <- fread("week6_dataset.csv")
+```
+
+# Model Comparison
+
+For many statistical models, it can be informative to
+compare different models to:
+
+* Evaluate which of two (or more) models provides the best fit to the
+  data
+* Evaluate / compare how the results for a particular predictor(s) of
+  interest change across two (or more) models.
+  
+We can broadly classify the type of comparison
+based on whether Model A and B are nested or non-nested models. 
+
+## Nested models/ Hiereachical Regression
+
+Models are considered nested when one model is a restricted or
+constrained version of another model. This is what we commonly refer to as 
+**Hierarchical regression**. 
+In other words, hierarchical regression is a special case of model comparison. 
+For example, 
+
+* **Model A** predicts Variable1 from Variable2, Age, and Sex.
+* **Model B** predicts Variable1 from Variable2 only.
+
+```{r}
+ma <- lm(Variable1 ~ Variable2 + Age + Sex, data = d)
+mb <- lm(Variable1 ~ Variable2, data = d)
+```
+
+In this case, we would say that 
+**Model B** is nested within **Model A**. In other words, 
+**Model A** contains every predictor and parameter in **Model B** and more.
+
+### Checking number of observations
+
+For model comparison, it is critical that both models use the same data and 
+have the same number of observations. We can extract this information using the `nobs()` function, 
+which lets us confirm that our models are fitted to the same data. 
+For example, if Age had some missing data that was not missing Variable2 or
+Variable1, it could be that **Model A** is based on fewer observations than 
+**Model B**. 
+
+**Tips** 
+If the observations are not the same across models, we will need
+to create a new dataset that had any missing data on any variable used
+in any of the models excluded 
+(refer to Week 3 for resources related to dealing with missing data).
+
+
+```{r}
+nobs(ma)
+nobs(mb)
+```
+
+In this case, we can see that the number of observations are
+identical. The `anova()` function can be used to obtain the 
+Likelihood Ratio Test^[https://en.wikipedia.org/wiki/Likelihood-ratio_test] 
+to compare the significance of each mode. 
+
+```{r}
+anova(mb, ma, test = "LRT")
+```
+
+**Interpretation of ANOVA for Model comparison** 
+
+With a *p* value of 0.13, the successive model (**Model A**) was not significant above and beyond 
+the previous one (**Model B**). 
+This suggests that the additional predictors did not improve the predictive ability of the overall model.
+
+## Non-nested models
+
+When models involve different variables,  they are not nested. 
+For example,
+
+* **Model A** predicts Variable1 from Variable2 and Age.
+* **Model B** predicts Variable1 from Variable2 and Sex.
+
+```{r}
+ma <- lm(Variable1 ~ Variable2 + Age, data = d)
+mb <- lm(Variable1 ~ Variable2 + Sex, data = d)
+```
+
+Let's also check the number of observations
+
+```{r}
+nobs(ma)
+nobs(mb)
+```
+
+We can use measures of "good" models that account for model complexity. 
+
+* Akaike Information Criterion (AIC)
+* Bayesian Information Criterion (BIC)
+
+AIC and BIC indicate how well the model fits the data with 
+while using a penalty on the model for its number of parameters. 
+They work with both nested and non-nested model.
+
+Lower scores of AIC or BIC indicate better model (i.e., 
+higher likelihood and fewer number of parameters ), 
+so we pick the model with the lowest AIC/BIC. 
+Therefore, we usually use both AIC and BIC to "choose" our "best" model. 
+When there is conflict between AIC and BIC, we must decide on which information criterion to go with. 
+For sample sizes > 8, BIC has stronger penalty on
+model complexity and favor relatively more parsimonious models than AIC. 
+This means we may choose to go with BIC for large sample sizes. =
+Alternatively, we may choose the less complex model.
+
+```{r}
+AIC(ma, mb)
+BIC(ma, mb)
+```
+
+**Interpretation of AIC and BIC** 
+We can see that **Model A** have lower both AIC and BIC, indicating that it is a better fir for the data, 
+compared to **Model B**. We cannot conclude that **Model A** is a "good" model, only that it is better
+than **Model B**.

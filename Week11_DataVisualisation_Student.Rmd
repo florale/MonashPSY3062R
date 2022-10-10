@@ -1,0 +1,226 @@
+---
+title: "Week 11 - Data Visualisation"
+author: "Flora Le (flora.le@monash.edu)"
+date: "`r Sys.Date()`"
+output: html_document
+---
+# Intro
+
+Throughout the semester, we have been exploring different methods to visualise data and communicate our analysis. 
+This week we will dive a bit further into how to improve data visualisation and 
+customise our graphs with ggplot.
+
+# Packages
+
+```{r pkg, message=FALSE}
+library(data.table)
+library(psych)
+library(car)
+library(ggplot2)
+library(JWileymisc)
+library(extraoperators)
+library(lm.beta)
+library(visreg)
+library(olsrr)
+library(corrplot)
+library(emmeans)
+library(effectsize)
+library(onewaytests)
+library(dplyr)
+```
+
+# Some useful packages for `ggplot`
+
+```{r}
+install.packages(c("ggthemes", "ggpubr", "ggsci"))
+library(ggthemes)
+library(ggpubr)
+library(ggsci)
+```
+
+# Data
+
+```{r}
+source("week11_data.R")
+```
+
+# Mapping Additional Variables
+## Univariate graphs
+We have learnt how to make simple graphs like univariate graphs.
+We can map additional variables to aesthetics such as the colour to
+include more information. 
+
+*Example 1. Density Plot*
+
+For density plots, separating by colour is easy, by adding another
+variable, say `Sex` as an additional aesthetic. 
+For categorical aesthetics like color, if it had not already been a factor, 
+its a good idea to convert it to a factor first
+
+```{r}
+# distribution of Variable 1
+ggplot(d, aes(x = Variable1)) + 
+  geom_density()
+
+# distribution of Variable 1 separated by Sex
+ggplot(d, aes(x = Variable1, colour = Sex)) + 
+  geom_density()
+```
+
+*Example 2. Histogram*
+
+For histograms, rather than control the colour of the lines, it is
+more helpful to control the fill colour. By default, the bars
+are stacked on top of each other.
+Overlapping bars can be dodged instead of stacked, 
+by adding an additional argument `position = "dodge"`.
+
+```{r}
+# stacked bars
+ggplot(d, aes(x = Variable1, fill = Sex)) + 
+  geom_histogram()
+
+# dodged bars
+ggplot(d, aes(x = Variable1, fill = Sex)) + 
+  geom_histogram(position = "dodge")
+```
+
+## Bivariate graphs
+We can also map additional variables to our bivariate graphs.
+
+*Example 3. Scatter plot*
+
+As usual, we add colour to separate the relationship between `Variable1` and `Variable2` by `Sex`.
+
+```{r}
+ggplot(d,
+       aes(
+         x = Variable1,
+         y = Variable2, colour = Sex)) +  
+  geom_point() +
+  geom_smooth(method = 'lm', se = FALSE)
+```
+
+# Improving Data Visualisation
+
+When building a graph, it is helpful to think about what makes a good chart. 
+Apart from selecting suitable chart types for our data, 
+customising the axis, annotations, and the background (or commonly known as themes)
+can significantly improve the visualisation of your data.
+
+You might have noticed that the graphs in the `.html` files are visually different from the 
+graph we make during the workshops using the coded provided in the `.Rmd` file. This is because 
+I have added other components to the graph, such as non-data components. 
+Let's look at how this works.
+
+## Linear Model Graph
+This is the default version of a `visreg` graph presenting 
+the relationship between Variable1 and Variable2.
+
+```{r}
+visreg(ml, xvar = "Variable2")
+```
+
+To improve this graph, we first remove some elements that are not helpful on the graph, 
+including the partial residuals and the rug (thin lines beside the axes displaying the distribution), 
+by setting `partial = FALSE` and `rug = FALSE`. 
+
+Good labels are critical for making your plots accessible to a wider audience. 
+We should always ensure the axis and legend labels display the full variable name. 
+To modify our `visreg` graph, we first add an argument `gg = TRUE` to make it a ggplot. 
+We then add our axis labels using the `ylab` and `xlab` functions. 
+The `labs()` function also lets us name our axes and add a title to our graph.
+
+We can also set a theme for the graph. `ggplot2` comes with a number of built in themes. 
+Other nice themes can be found in packages such as `ggthemes` and `ggpubr`.
+We will use the `theme_classic()` for our graph today.
+
+```{r}
+visreg(ml, xvar = "Variable2", partial = FALSE, rug = FALSE, gg = TRUE,
+       line.par = list(col = "#9BBBD2"), 
+       fill.par = list(fill = ggplot2::alpha("#ADC7DA", 0.3))) +
+  labs(x = "Name of Variable2", y = "Name of Variable 1", 
+       title = "A Linear Model predicting Variable1 from Variable2") +
+  theme_classic()
+```
+
+## Moderation Graph
+
+We can apply the same principles to our moderation graph.
+Here is the original graph showing the relationship between Variable2 and Variable1, moderated by Sex.
+
+```{r}
+visreg(mod, 
+       xvar = "Variable2", by = "Sex")
+```
+
+
+Coming to our non-data visual-enhancing components, 
+we first overlay our slopes for females and males on top of each other by setting `overlay = TRUE`.
+
+Instead of setting the colours manually, we can utilise the some colour palettes for `ggplot2` in `R`. 
+For example, `ggsci` package offers a collection of color palettes inspired by colors used in scientific journals,
+data visualization libraries, science fiction movies, and TV shows. 
+In this example, I used the `simpsons` palette, which is inspried by the coloursused in The Simpsons. 
+I added colour palettes for both slopes using `scale_color_simpsons()` and confidence intervals using `scale_fill_simpsons()`. 
+I also adjusted level of transparency of the fill scale by setting `alpha = .2` 
+(this value ranges from 0 to 1, with lower values corresponding to more transparent colors).
+
+[Some other R colour palette recommendations](https://www.datanovia.com/en/blog/top-r-color-palettes-to-know-for-great-data-visualization/).
+
+```{r}
+visreg(mod, 
+       xvar = "Variable2", by = "Sex",
+       overlay = TRUE, partial = FALSE, band = TRUE, rug = FALSE, gg = TRUE) +
+  scale_color_simpsons() +
+  scale_fill_simpsons(alpha = .2) +
+  labs(x = "Name of Variable2", y = "Name of Variable 1") +
+  theme_classic()
+```
+
+## ANOVA Graph
+
+For ANOVA graph, recall that we can use both `visreg` and `emmip` functions to present our results. 
+We heve learnt how to improve our `visreg` object, so in this example, let's see how we can 
+customise our `emmip` graph.
+
+Here  is the default graph.
+
+```{r}
+emmip(em, AUDITCat ~ Sex, CIs = TRUE)
+```
+
+`emmip()` uses base ggplot so we can simply add layers to customise our graph. 
+We use the `jco` palette from `ggsci` this time. The `facet_grid()` function lets us 
+lay out panels in a grid so we can separate our graph by alcohol risk groups.
+
+```{r}
+emmip(em, AUDITCat ~ Sex, CIs = TRUE) +
+  scale_color_jco() +
+  labs(x = "Sex", y = "Variable1") +
+  theme_classic() + 
+  facet_grid(~AUDITCat)
+```
+
+There are some redundant components in this graph. 
+Since we have colour coded our results, we don't really need the labels from facet plot.
+The ticks along the x-axis as well as the x-axis label are also not really important. 
+We can make the background of our graph cleaner (less ink) using the `theme()` function. 
+
+First, we set `strip.text.x = element_blank()` to remove the labels from the facet plot.
+The `axis.ticks.x = element_blank()` can be added to remove the ticks on the axis. 
+We can also adjust the position of our legend, for example, move it to the top with the 
+`legend.position = "top"` argument.
+
+```{r}
+emmip(em, AUDITCat ~ Sex, CIs = TRUE) +
+  scale_color_jco() +
+  labs(x = "", y = "Variable1") +
+  guides(colour = guide_legend("Alcohol Consumption")) + 
+  theme_classic() + 
+  facet_grid(~AUDITCat) +
+  theme(strip.text.x = element_blank(),
+        axis.ticks.x = element_blank(),
+        legend.position = "top")
+```
+

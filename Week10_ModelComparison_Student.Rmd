@@ -91,8 +91,8 @@ Variable1, it could be that **Model A** is based on fewer observations than
 
 **Tips** 
 If the observations are not the same across models, we will need
-to create a new dataset that had any missing data on any variable used
-in any of the models excluded 
+to create a new dataset that excludes any missing data on any variable used
+in any of the models  
 (refer to Week 3 for resources related to dealing with missing data).
 
 
@@ -104,7 +104,7 @@ nobs(mb)
 In this case, we can see that the number of observations are
 identical. The `anova()` function can be used to obtain the 
 Likelihood Ratio Test^[https://en.wikipedia.org/wiki/Likelihood-ratio_test] 
-to compare the significance of each mode. 
+to compare the significance of each model. 
 
 ```{r}
 anova(mb, ma, test = "LRT")
@@ -118,7 +118,7 @@ This suggests that the additional predictors did not improve the predictive abil
 
 ## Non-nested models
 
-When models involve different variables,  they are not nested. 
+When models involve different variables, they are not nested. 
 For example,
 
 * **Model A** predicts Variable1 from Variable2 and Age.
@@ -141,7 +141,7 @@ We can use measures of "good" models that account for model complexity.
 * Akaike Information Criterion (AIC)
 * Bayesian Information Criterion (BIC)
 
-AIC and BIC indicate how well the model fits the data with 
+AIC and BIC indicate how well the model fits the data 
 while using a penalty on the model for its number of parameters. 
 They work with both nested and non-nested model.
 
@@ -152,7 +152,7 @@ Therefore, we usually use both AIC and BIC to "choose" our "best" model.
 When there is conflict between AIC and BIC, we must decide on which information criterion to go with. 
 For sample sizes > 8, BIC has stronger penalty on
 model complexity and favor relatively more parsimonious models than AIC. 
-This means we may choose to go with BIC for large sample sizes. =
+This means we may choose to go with BIC for large sample sizes.
 Alternatively, we may choose the less complex model.
 
 ```{r}
@@ -161,6 +161,6 @@ BIC(ma, mb)
 ```
 
 **Interpretation of AIC and BIC** 
-We can see that **Model A** have lower both AIC and BIC, indicating that it is a better fir for the data, 
+We can see that **Model A** has lower both AIC and BIC, indicating that it is a better fit for the data, 
 compared to **Model B**. We cannot conclude that **Model A** is a "good" model, only that it is better
 than **Model B**.

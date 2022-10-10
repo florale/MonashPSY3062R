@@ -1670,9 +1670,9 @@ than <strong>Model B</strong>.</p>
 <div class="sand">
 <p><strong>Tips</strong></p>
 <p>If the observations are not the same across models, we will need to
-create a new dataset that had any missing data on any variable used in
-any of the models excluded (refer to Week 3 for resources related to
-dealing with missing data).</p>
+create a new dataset that excludes any missing data on any variable used
+in any of the models (refer to Week 3 for resources related to dealing
+with missing data).</p>
 </div>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nobs</span>(ma)</span></code></pre></div>
 <pre><code>## [1] 380</code></pre>
@@ -1681,7 +1681,7 @@ dealing with missing data).</p>
 <p>In this case, we can see that the number of observations are
 identical. The <code>anova()</code> function can be used to obtain the
 Likelihood Ratio Test<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> to compare the significance of each
-mode.</p>
+model.</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(mb, ma, <span class="at">test =</span> <span class="st">&quot;LRT&quot;</span>)</span></code></pre></div>
 <pre><code>## Analysis of Variance Table
 ## 
@@ -1723,9 +1723,9 @@ complexity.</p>
 <li>Akaike Information Criterion (AIC)</li>
 <li>Bayesian Information Criterion (BIC)</li>
 </ul>
-<p>AIC and BIC indicate how well the model fits the data with while
-using a penalty on the model for its number of parameters. They work
-with both nested and non-nested model.</p>
+<p>AIC and BIC indicate how well the model fits the data while using a
+penalty on the model for its number of parameters. They work with both
+nested and non-nested model.</p>
 <p>Lower scores of AIC or BIC indicate better model (i.e., higher
 likelihood and fewer number of parameters ), so we pick the model with
 the lowest AIC/BIC. Therefore, we usually use both AIC and BIC to
@@ -1745,8 +1745,8 @@ less complex model.</p>
 ## mb  4 2195</code></pre>
 <div class="sky">
 <p><strong>Interpretation of AIC and BIC</strong></p>
-<p>We can see that <strong>Model A</strong> have lower both AIC and BIC,
-indicating that it is a better fir for the data, compared to
+<p>We can see that <strong>Model A</strong> has lower both AIC and BIC,
+indicating that it is a better fit for the data, compared to
 <strong>Model B</strong>. We cannot conclude that <strong>Model
 A</strong> is a “good” model, only that it is better than <strong>Model
 B</strong>.</p>

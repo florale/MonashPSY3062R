@@ -1598,7 +1598,7 @@ div.tocify {
 <div id="intro" class="section level1" number="1">
 <h1><span class="header-section-number">1</span> Intro</h1>
 <div class="blue">
-<p>This week we learn how conduct correlation test and multple linear
+<p>This week we learn how conduct correlation test and multiple linear
 regression in <code>R</code>.</p>
 </div>
 </div>
@@ -1722,8 +1722,8 @@ Model</strong></p>
 Here is an example of a multiple regression model. Your model should
 include all predictors of interest.</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">lm</span>(Ought_Score <span class="sc">~</span> Inherence_Bias <span class="sc">+</span> Belief_in_Just_World <span class="sc">+</span> educ, <span class="at">data =</span> d)</span></code></pre></div>
-<div id="summarise-model-results" class="section level2" number="7.1">
-<h2><span class="header-section-number">7.1</span> Summarise model
+<div id="understanding-model-results" class="section level2" number="7.1">
+<h2><span class="header-section-number">7.1</span> Understanding model
 results</h2>
 <p>Use <code>summary()</code> function to obtain model results.</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(m)</span></code></pre></div>
@@ -1774,8 +1774,8 @@ the p-value for the F-test is identical to the p-value for the t-test of
 the predictor’s coefficient. In multiple regression models, they are not
 identical.</p>
 </div>
-<div id="get-confidence-intervals" class="section level2" number="7.2">
-<h2><span class="header-section-number">7.2</span> Get confidence
+<div id="confidence-intervals" class="section level2" number="7.2">
+<h2><span class="header-section-number">7.2</span> Confidence
 intervals</h2>
 <p>Use <code>confint()</code> function to get 95% confidence
 intervals.</p>
@@ -1786,10 +1786,11 @@ intervals.</p>
 ## Belief_in_Just_World -0.3740 0.1391
 ## educ                 -0.3035 0.1274</code></pre>
 </div>
-<div id="get-standardised-coefficients" class="section level2" number="7.3">
-<h2><span class="header-section-number">7.3</span> Get standardised
+<div id="standardised-coefficients" class="section level2" number="7.3">
+<h2><span class="header-section-number">7.3</span> Standardised
 coefficients</h2>
-<p>Use <code>lm.beta()</code> function to standardised coefficients.</p>
+<p>Use <code>lm.beta()</code> function to get standardised
+coefficients.</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lm.beta</span>(m)</span></code></pre></div>
 <pre><code>## 
 ## Call:
@@ -1802,9 +1803,9 @@ coefficients</h2>
 ##                 educ 
 ##             -0.07102</code></pre>
 </div>
-<div id="present-results-in-a-table" class="section level2" number="7.4">
-<h2><span class="header-section-number">7.4</span> Present results in a
-table</h2>
+<div id="presenting-results-in-a-table" class="section level2" number="7.4">
+<h2><span class="header-section-number">7.4</span> Presenting results in
+a table</h2>
 <p>We can get a nicely formatted set of output for a model using the
 <code>modelTest()</code> and <code>APAStyler()</code> functions.</p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">APAStyler</span>(<span class="fu">modelTest</span>(m))</span></code></pre></div>
@@ -1901,10 +1902,10 @@ gives us the values, and the “Type” column is the broad category.</p>
 <li>The first four rows are the results for each predictor, including
 the estimates, asterisks to indicate p-values, and the 95% confidence
 intervals in brackets.</li>
-<li><strong>R2</strong> is <span class="math inline">\(R^2\)</span> and
-<strong>Adj R2</strong> is adjusted <span class="math inline">\(R^2\)</span></li>
-<li>The last three rows are cohen’s <span class="math inline">\(f^2\)</span> effect sizes for each individual
-predictor along with p-values.<br />
+<li>The last five rows are <span class="math inline">\(R^2\)</span> and
+adjusted <span class="math inline">\(R^2\)</span> for the overall model,
+along with cohen’s <span class="math inline">\(f^2\)</span> effect sizes
+for each individual predictor along with p-values.<br />
 </li>
 </ul>
 <div class="sky">
@@ -1917,9 +1918,9 @@ ought, b = 0.32 [95% CI 0.14 - 0.49], p &lt; .001. This was a small
 effect, <span class="math inline">\(f^2\)</span> = 0.11.</p>
 </div>
 </div>
-<div id="plotting-relationships" class="section level2" number="7.5">
-<h2><span class="header-section-number">7.5</span> Plotting
-relationships</h2>
+<div id="visualising-regression-model" class="section level2" number="7.5">
+<h2><span class="header-section-number">7.5</span> Visualising
+regression model</h2>
 <p>We can use the <code>visreg</code> package to visualise the results
 from the regressions. The defaults gives us the regression line (red
 line), the 95% confidence intervals (shaded grey region), along with the

@@ -191,9 +191,8 @@ broad category.
 
 * The first four rows are the results for each predictor, including the estimates, 
 asterisks to indicate p-values, and the 95% confidence intervals in brackets. 
-* **R2** is $R^2$ and **Adj R2** is adjusted $R^2$
-* The last three rows are cohen's $f^2$ effect sizes for each individual 
-predictor along with p-values.
+* The last five rows are $R^2$, adjusted $R^2$ for the overall model, along with 
+  cohen's $f^2$ effect sizes for each individual predictor along with p-values.
 
 **Sample Write-up**
 A multiple regression model was used to examine the relationship between 
@@ -202,7 +201,9 @@ When controlling for education level,
 Raven’s Progressive matrix score, conservatism, and belief in a just world, 
 higher inherence bias significantly predicted higher ought, 
 b = XX, [95% CI XX, XX],p = XX. 
-This was a small effect,  $f^2$ = 0.11.
+This was a small effect,  $f^2$ = 0.11. 
+The overall model explained XX%  
+of the variance in tendency to believe the status quo ought to be within the sample.
 
 ## Plotting relationships
 

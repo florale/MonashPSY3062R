@@ -1,0 +1,305 @@
+---
+title: "Week 12 - Control Flow in R"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+# Intro
+
+Welcome to the final workshop! As requested, this week is a brief introduction to control flow in `R`. 
+We discuss if/else statement, `ifelse()`, `for` loops, and `apply()` family functions.
+
+Flow control or conditional execution is critical in a lot of code.
+Often some code should only be run under certain conditions and other 
+code run under other conditions. There are two primary tools of control flow: choices and loops. 
+
+**Choices**
+
+1. `if...else...`
+2. `ifelse()`
+
+**Loops**
+
+3. `for` loops
+4. `apply()` family functions
+
+These are a few key topics you should understand and be able to code in `R`,
+at least at a basic level.
+
+## Packages and Data
+
+The `flights` dataset contains information about all flights that departed from NYC 
+(e.g. EWR, JFK and LGA) to destinations in the United States, Puerto Rico, and the American Virgin Islands 
+in 2013: 336,776 flights in total. 
+
+```{r pkg, message=FALSE}
+library(data.table)
+
+# data
+install.packages("nycflights13")
+library(nycflights13)
+data("flights")
+
+# make datatable
+flights <- as.data.table(flights)
+```
+
+## `flights` variables
+
+```{r}
+??flights
+str(flights)
+```
+
+* `year`, `month`, and `day`: Date of departure.
+* `dep_time` and `arr_time`: Departure and Arrival time, in Eastern time zone.
+* `dep_delay` and `arr_delay`: Departure and Arrival delay, in minutes.
+* `sched_dep_time` and `sched_arr_time`: Scheduled Departure and Arrival times.
+* `carrier`: Carrier, abbreviated.
+* `flight`: Flight number.
+* `tailnum`: Tail number of the airplane.
+* `origin`: Flight origin, airport code.
+* `dest`: Flight destination, airport code.
+* `air_time`: Time in the air, in minutes.
+* `distance`: Distance between the departure and arrival airports, in miles.
+* `hour` and `minute`: Scheduled departure broken into hour and minute.
+
+# `if/else` statements
+The basic form of an `if` statement in `R` is as follows:
+
+```{r}
+if (condition) true_action
+if (condition) true_action else false_action
+```
+
+If condition is `TRUE`, `true_action` is evaluated; 
+if condition is `FALSE`, the optional `false_action` is evaluated.
+
+**When to use** `if/else` statement
+
+```{r}
+a <- 13
+b <- 29
+
+if (a > b) {
+  print("a is greater than b")
+  } else {
+    print("b is greater than a")
+  }
+```
+
+**Example** Evaluating a condition before an assignment.
+
+Let's look at an example of fitting a `lm()` model predicting departure delay `dep_delay` 
+by flight origin `origin`. 
+In addition, we want to run this model only when our predictor `origin` is continuous.
+Note that this is not a very good coding practice, 
+as we can simply check the variable type. 
+This type of evaluation comes handy in scenarios such as writing functions.
+
+
+```{r}
+if (identical(class(flights$origin), "numeric")) {
+  m <- lm(dep_delay ~ origin, data = flights)
+  } else {
+    stop("predictor should be a numeric variable")
+  }
+
+# check variable type
+class(flights$origin)
+```
+
+# `ifelse()`
+`ifelse()` is a vectorised function with test, yes, and no vectors.
+
+```{r, eval = FALSE}
+ifelse(test, yes, no)
+```
+
+**When to use** `ifelse()`.
+
+```{r}
+c <- c(1, 2, 3, 8, 9)
+ifelse(c %% 2 == 0, "even", "odd")
+```
+
+**Example** Basic data management
+
+Create a new variable `dep_status` to indicate whether the departure time was on-time, early, or delayed 
+based on the departure delay variable (`dep_delay`).
+
+```{r}
+flights[, dep_status := NA]
+flights[, dep_status := ifelse(dep_delay == 0, "On time", dep_status)]
+flights[, dep_status := ifelse(dep_delay > 0, "Delayed", dep_status)]
+flights[, dep_status := ifelse(dep_delay < 0, "Early", dep_status)]
+```
+
+
+```{r}
+table(flights$dep_status)
+```
+
+**Example** Advanced data management
+ 
+Create a new variable `status` to indicate whether a flight was on-time, early, or delayed 
+based on both departure (`dep_delay`) and arrival time (`arr_delay`).
+
+```{r}
+flights[, status := NA]
+flights[, status := ifelse(dep_delay == 0 & arr_delay == 0, "On time", status)]
+
+flights[, status := ifelse(dep_delay == 0 & arr_delay > 0, "Delayed Arrival", status)]
+flights[, status := ifelse(dep_delay > 0 & arr_delay == 0, "Delayed Departure", status)]
+
+flights[, status := ifelse(dep_delay == 0 & arr_delay < 0, "Early Arrival", status)]
+flights[, status := ifelse(dep_delay < 0 & arr_delay == 0, "Early Departure", status)]
+
+flights[, status := ifelse(dep_delay < 0 & arr_delay > 0, "Early Departure and Delayed Arrival", status)]
+flights[, status := ifelse(dep_delay > 0 & arr_delay < 0, "Delayed Departure and Early Arrival", status)]
+
+flights[, status := ifelse(dep_delay > 0 & arr_delay > 0, "Delayed Departure and Arrival ", status)]
+flights[, status := ifelse(dep_delay < 0 & arr_delay < 0, "Early Departure and Arrival ", status)]
+```
+
+
+```{r}
+table(flights$status)
+```
+
+# `for` loop
+`for` loops are used to iterate over items in a vector. They have the following basic form:
+
+```{r, eval = FALSE}
+for (item in vector) perform_action
+```
+
+**When to use** `for` loop.
+
+```{r}
+for (d in 1:13) {
+  e <- d + 29
+  
+  print(e)
+}
+```
+
+**Example** Running models with for loop
+
+Run linear models predicting Distance flown between airports (`distance`) from 
+amount of time spent in the air (`air_time`) and `carrier`,
+stratified by month of departure. 
+
+These models will have the same set of predictors and outcomes, but different datasets. 
+Therefore, we loop through 12 datasets (for 12 months) to run our models. 
+We can use for loop to run our models on each dataset.
+
+```{r}
+results <- list()
+for (m in 1:12) {
+  model <- lm(distance ~ air_time + factor(carrier), data = flights[month == m])
+  
+  results[[m]] <- model
+}
+```
+
+Inspect model results.
+
+```{r}
+summary(results[[1]])
+```
+
+**Example** Combining for loop and if/else to convert variables into factors.
+
+In this example, we will loop through each variable in the `flights` dataset, 
+check whether it is a character variables and if so, convert to factors.
+
+```{r}
+# create a copy of the dataset
+tmp <- copy(flights)
+
+# convert variables using both for loop and if statement
+for (j in colnames(tmp)) {
+  if(identical(class(tmp[[j]]), "character")) {
+    tmp[, (j) := as.factor(get(j))]
+  }
+}
+```
+
+Let's compare the two datasets.
+
+```{r}
+str(flights)
+str(tmp)
+```
+
+# `apply` Functions
+`apply` functions are a family of functions in base `R` which allow you to repetitively perform an 
+action on multiple chunks of data. 
+`apply` family in r contains `apply()`, `lapply()`, `sapply()`, `mapply()`, and `tapply()`. 
+`apply` functions essentially a for loop, but run faster than loops and often require less code, 
+because they are vectorised. 
+Let's look at the three most common, `apply()`, `lapply()`, and `sapply()`.
+
+| Functions        | Syntax                   |
+|:----------------:|:------------------------:|
+| `apply`          | apply(X, MARGIN, FUN, …) |
+| `lapply`         | lapply(X, FUN, …)        |
+| `sapply`         | sapply(mylist, FUN)      |
+
+**When to use** `apply()`
+
+`apply()` function takes a *data frame* or *matrix* as input and 
+can be applied by the rows (margin = 1) or by the columns (margin = 2). 
+It returns output in *vector*, *list*, or *array.*
+
+```{r}
+# first remove missing data
+flights <- flights[complete.cases(flights)]
+
+# calculate mean of each numeric variable
+get_mean <- apply(flights[, c(4:9)], 2, mean)
+get_mean
+
+# calculate SD of each numeric variable
+get_sd <- apply(flights[, c(4:9)], 2, sd)
+get_sd
+```
+
+**When to use** `lapply()` and `sapply()`
+
+The `lapply` function applies a function to a *data frame*, *list* or *vector*, 
+and return a *list* of the same length. 
+`sapply()` does the same job as `lapply()` function but returns a *vector*, 
+instead of a list. **They both don't need MARGIN.**
+
+
+```{r}
+get_lmean <- lapply(flights[, c(4:9)], mean)
+get_smean <- sapply(flights[, c(4:9)], mean)
+```
+
+**Example** Running multiple models with `apply()`.
+
+Here is an example where we use Flight origin (`origin`) to predict 
+Departure and Arrival time (`dep_time` and `arr_time`),
+Departure and Arrival delay (`dep_delay` and `arr_delay`), and 
+Scheduled departure and Arrival times (`sched_dep_time` and `sched_arr_time`), respectively.
+
+These models have the *same predictor(s)* but *different outcomes*.
+Instead of running 6 individual models (one for each outcome), 
+we can use either `lapply()` or `sapply()` to essentially loop through our outcome variables.
+
+```{r}
+# notes. tmp[, c(4:9)] is a subset of tmp that includes only the 6 outcomes variable
+
+list_of_model <- lapply(tmp[, c(4:9)], function(dv){
+  m <- aov(dv ~ origin, data = tmp)
+  summary(m)
+})
+
+sapply(tmp[, c(4:9)], function(dv){
+  m <- aov(dv ~ origin, data = tmp)
+  summary(m)
+})
+```

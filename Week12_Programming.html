@@ -1934,12 +1934,12 @@ evaluated; if condition is <code>FALSE</code>, the optional
 <div class="lblue">
 <p><strong>Example</strong> Evaluating a condition before an
 assignment.</p>
-<p>Let’s look at an example of fitting a <code>lm()</code> model
-predicting departure delay <code>dep_delay</code> by flight origin. In
-addition, we want to run this model only when our predictor
-<code>origin</code> is continuous. Note that this is not a very good
-coding practice, as we can simply check the variable type. This type of
-evaluation comes handy in scenarios such as writing functions.</p>
+<p>Let’s fit a <code>lm()</code> model predicting departure delay
+<code>dep_delay</code> by flight origin. In addition, we want to run
+this model only when our predictor <code>origin</code> is continuous.
+Note that this is not a very good coding practice, as we can simply
+check the variable type. This type of evaluation comes handy in
+scenarios such as writing functions.</p>
 </div>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">identical</span>(<span class="fu">class</span>(flights<span class="sc">$</span>origin), <span class="st">&quot;numeric&quot;</span>)) {</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  m <span class="ot">&lt;-</span> <span class="fu">lm</span>(dep_delay <span class="sc">~</span> origin, <span class="at">data =</span> flights)</span>
@@ -2113,11 +2113,11 @@ They have the following basic form:</p>
 ## [1] 42</code></pre>
 <div class="lblue">
 <p><strong>Example</strong> Running models with for loop</p>
-<p>Run linear models predicting Distance flown between
-airports(<code>distance</code>) from amount of time spent in the air
+<p>Let’s run a series linear models predicting Distance flown between
+airports (<code>distance</code>) from amount of time spent in the air
 (<code>air_time</code>) and <code>carrier</code>, stratified by month of
 departure.</p>
-<p>These models will have the same set of predictors and outcomes, but
+<p>These models have the same set of predictors and outcomes, but
 different datasets. Therefore, we loop through 12 datasets (for 12
 months) to run our models. We can use for loop to run our models on each
 dataset.</p>
@@ -2168,9 +2168,9 @@ dataset.</p>
 <div class="lblue">
 <p><strong>Example</strong> Combining for loop and if/else to convert
 variables into factors.</p>
-<p>In this example, we will loop through each variable in the
-<code>flights</code> dataset, check whether it is a character variables
-and if so, convert to factors.</p>
+<p>In this example, we loop through each variable in the
+<code>flights</code> dataset, check whether it is a character variable
+and if so, convert to a factor.</p>
 </div>
 <div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create a copy of the dataset</span></span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> <span class="fu">copy</span>(flights)</span>

@@ -7,7 +7,7 @@ output: html_document
 # Intro
 
 Welcome to the final workshop! As requested, this week is a brief introduction to control flow in `R`. 
-We discuss if/else statement, `ifelse()`, `for` loops, and `apply()` family functions.
+We discuss if/else statement, `ifelse()`, `for` loops, and `apply()` family functions
 
 Flow control or conditional execution is critical in a lot of code.
 Often some code should only be run under certain conditions and other 
@@ -186,11 +186,11 @@ for (d in 1:13) {
 
 **Example** Running models with for loop
 
-Run linear models predicting Distance flown between airports (`distance`) from 
+Let's run a series linear models predicting Distance flown between airports (`distance`) from 
 amount of time spent in the air (`air_time`) and `carrier`,
 stratified by month of departure. 
 
-These models will have the same set of predictors and outcomes, but different datasets. 
+These models have the same set of predictors and outcomes, but different datasets. 
 Therefore, we loop through 12 datasets (for 12 months) to run our models. 
 We can use for loop to run our models on each dataset.
 
@@ -211,8 +211,8 @@ summary(results[[1]])
 
 **Example** Combining for loop and if/else to convert variables into factors.
 
-In this example, we will loop through each variable in the `flights` dataset, 
-check whether it is a character variables and if so, convert to factors.
+In this example, we loop through each variable in the `flights` dataset, 
+check whether it is a character variable and if so, convert to a factor.
 
 ```{r}
 # create a copy of the dataset
@@ -302,4 +302,5 @@ sapply(tmp[, c(4:9)], function(dv){
   m <- aov(dv ~ origin, data = tmp)
   summary(m)
 })
+
 ```

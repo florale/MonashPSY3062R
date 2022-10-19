@@ -55,7 +55,7 @@ include more information.
 For density plots, separating by colour is easy, by adding another
 variable, say `Sex` as an additional aesthetic. 
 For categorical aesthetics like color, if it had not already been a factor, 
-its a good idea to convert it to a factor first
+its a good idea to convert it to a factor first.
 
 ```{r}
 # distribution of Variable 1
@@ -161,7 +161,7 @@ we first overlay our slopes for females and males on top of each other by settin
 Instead of setting the colours manually, we can utilise the some colour palettes for `ggplot2` in `R`. 
 For example, `ggsci` package offers a collection of color palettes inspired by colors used in scientific journals,
 data visualization libraries, science fiction movies, and TV shows. 
-In this example, I used the `simpsons` palette, which is inspried by the coloursused in The Simpsons. 
+In this example, I used the `simpsons` palette, which is inspried by the colours used in The Simpsons. 
 I added colour palettes for both slopes using `scale_color_simpsons()` and confidence intervals using `scale_fill_simpsons()`. 
 I also adjusted level of transparency of the fill scale by setting `alpha = .2` 
 (this value ranges from 0 to 1, with lower values corresponding to more transparent colors).
@@ -181,17 +181,17 @@ visreg(mod,
 ## ANOVA Graph
 
 For ANOVA graph, recall that we can use both `visreg` and `emmip` functions to present our results. 
-We heve learnt how to improve our `visreg` object, so in this example, let's see how we can 
+We have learnt how to improve our `visreg` object, so in this example, let's see how we can 
 customise our `emmip` graph.
 
-Here  is the default graph.
+Here  is the default graph showing how Variable1 varys according to Alcohol Risk and Sex.
 
 ```{r}
 emmip(em, AUDITCat ~ Sex, CIs = TRUE)
 ```
 
 `emmip()` uses base ggplot so we can simply add layers to customise our graph. 
-We use the `jco` palette from `ggsci` this time. The `facet_grid()` function lets us 
+Let's use the `jco` palette from `ggsci` this time. The `facet_grid()` function lets us 
 lay out panels in a grid so we can separate our graph by alcohol risk groups.
 
 ```{r}

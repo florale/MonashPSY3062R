@@ -146,7 +146,7 @@ series
 Create a new variable call `j` and assign 5 numbers to it.
 
 ```{r}
-j <- c(1, 2, 3, 4, 5)
+
 ```
 
 Missing values in R are denoted by `NA` and/or `NaN`.
@@ -174,8 +174,8 @@ class(mtcars)
 
 There are several useful functions to explore a data frame.
 
-* `head()` - see first 5 rows
-* `tail()` - see last 5 rows
+* `head()` - see first 6 rows
+* `tail()` - see last 6 rows
 * `nrow()` - number of rows
 * `ncol()` - number of columns
 * `str()` - display the internal structure of an R object
@@ -216,7 +216,7 @@ Your dataset `d` should appear in the environment panel.
 
 ```{r}
 # example for Macs
-#d <- read.csv("/Users/florale/Library/CloudStorage/OneDrive-MonashUniversity/Work/MonashTA/2022_PSY3062/PSY3062 dataset.csv")
+# d <- read.csv("/Users/florale/Library/CloudStorage/OneDrive-MonashUniversity/Work/MonashTA/PSY3062_2023/PSY3062 dataset.csv")
 
 # example for Windows
 #d <- read.csv("C:/Users/florale/Downloads/PSY3062 dataset.csv")
@@ -387,10 +387,9 @@ Use functions you learnt today to explore the PSY3062 research report dataset.
 # Extra materials for R and coding
 ## DataCamp
 DataCamp is an interactive learning platform for many programming languages, including R. 
-I will add you to the PSY3062 team on DataCamp. 
-Michelle and I will add new chapters/exercises that you can practise coding in your own time. 
 If you are interested in learning a particular aspect of R or an analysis, 
-let me know and I will try to find a chapter for you to practise.
+let me know and
+Michelle and I can add new chapters/exercises that you can practise coding in your own time. 
 
 ## GitHub
 GitHub is a code hosting platform and lets us share our work for transparency.

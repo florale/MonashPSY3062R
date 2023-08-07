@@ -1,5 +1,5 @@
 ---
-title: "Week 3 - Working with Data 1 and Scoring"
+title: "Week 3 - Working with Data"
 author: "Your Name"
 date: "`r Sys.Date()`"
 output: html_document
@@ -82,8 +82,10 @@ We can create a data table when loading a dataset in R in 2 ways:
 Let's load the dataset we use for *week 3 tutorial*.
 
 ```{r data}
-d0 <- as.data.table(read.csv("Put your file path to the perceived control csv file here"))
-d <- fread("Put your file path to the perceived control csv file here")
+d0 <- as.data.table(read.csv("/Users/florale/Library/CloudStorage/OneDrive-MonashUniversity/Work/MonashTA/PSY3062_2022/Tutorial 2022/Tutorial 3/Tutorial 3 - T scores_Rworkshop_scored.csv"))
+d <- fread("Tutorial 3 - T scores_Rworkshop_scored.csv")
+
+d <- fread("/Users/florale/Library/CloudStorage/OneDrive-MonashUniversity/Work/MonashTA/PSY3062_2022/Tutorial 2022/Tutorial 3/Tutorial 3 - Perceived Control of Internal States.csv")
 ```
 
 These methods both work well. However, `fread()` is more speedy, which is helpful when you have a 
@@ -93,7 +95,7 @@ large dataset. We can check whether `d` and `d0` are the same dataset using the 
 identical(d, d0)
 ```
 
-Let's quickly inspect `d`. You can also view by clicking on `d` in your environment pane
+Let's quickly inspect `d`. You can also view by clicking on `d` in your environment pane.
 
 ```{r checkd1}
 head(d)
@@ -133,7 +135,7 @@ so you need to load it using the `library()` function.
 Create a new variable in `d`, call it `Class`, and assign `PSY3062` to it.
 
 ```{r}
-
+d[, Class := "PSY3062"]
 
 ```
 
@@ -151,8 +153,7 @@ d[, NewVar := NULL]
 Drop the `Class` variable.
 
 ```{r}
-
-
+d[, Class := NULL]
 ```
 
 # Subsetting dataset
@@ -161,7 +162,7 @@ and variables. Subsetting can be performed using both rows (represented by `i`) 
 For example, you can subset the PSY3062 dataset to keep only female participants (subsetting by rows) 
 or the three variables that you're using for your research project (subsetting by columns).
 
-## Subsetting rows in `i`
+## Subsetting rows in `i` 
 Get the first row from `d`. Key word here is row. 
 We need to provide `i` with the row index that we are after. 
 This returns a data table d with all columns at the first row.
@@ -177,7 +178,7 @@ multiple values, we use the `c()` function to make it a vector, e.g., `c(1, 2)` 
 We can also create sequence of numbers using `:`.
 
 ```{r}
-
+d[c(1:10)]
 ```
 
 ## Subsetting columns in `j`
@@ -190,10 +191,11 @@ d[ , 1]
 
 **You Try It**
 
-Subset columns 1, 2, 3, 8, 9 from `d`.
+Subset columns 1, 2, 3, 6, 7 from `d`.
 
 ```{r}
-
+d[, c(1, 2, 3, 6,7)]
+d[, c(1:3,  6,7)]
 ```
 
 ## Subsetting data by variable names
@@ -202,6 +204,8 @@ This is helpful when we know the variable names, but we don't know which column 
 
 ```{r}
 d[, .(pc1, pc2)]
+d[, c("pc1", "pc2")]
+
 ```
 
 ## Create a sub dataset
@@ -255,7 +259,7 @@ We can also perform this on the entire dataset, rather than just only `pc1`.
 d4 <- d[complete.cases(d)]
 ```
 
-# Scoring and Reliability
+# Scoring
 
 When we work with our own data, often we have to score our variables from the individual item scores. 
 Scales/subscales in psychology are usually scored by summing or taking the average.
@@ -333,40 +337,6 @@ Calculate the sum of all `pc` variables.
 
 ```{r}
 
-
-```
-
-## Reliability
-Reliability is assessed using Cronbach's alpha. Cronbach's alpha is calculated from the individual 
-items, not the total nor mean.
-
-```{r alpha}
-## calculate Cronbach's alpha
-psych::alpha(as.data.frame(d[, .(pc1, pc2, pc3)]))
-```
-
-**You Try It**
-
-Calculate Cronbach's alpha for the this scale. Pay attention to the warning. 
-
-Let's run this again using the `check.keys = TRUE` option. This option tells `alpha()` function to 
-automatically reverse items when calculating Cronbach's alpha.
-
-```{r}
-psych::alpha(as.data.frame(d[, .(pc1, pc2, pc3, pc4, pc5, pc6, pc7, pc8, pc9, pc10,
-                                 pc11, pc12, pc13, pc14, pc15, pc16, pc17, pc18)]), check.keys = TRUE)
-```
-
-**Interpreting R Output**
-
-You can see that R gives us several outputs. You can learn about interpreting these results by running 
-this code `?alpha`. The most helpful output here is the `raw_alpha`. It tells you about the Cronbach's alpha, 
-which is `r psych::alpha(as.data.frame(d[, .(pc1, pc2, pc3, pc4, pc5, pc6, pc7, pc8, pc9, pc10, pc11, pc12, pc13, pc14, pc15, pc16, pc17, pc18)]), check.keys = TRUE)$total$raw_alpha`. 
-
-*What does this value indicate? Does this scale has good reliability?*
-
-```{r}
-# run ?alpha below if interested
 
 ```
 
@@ -468,12 +438,3 @@ computing the final score by either summing or averaging individual items.
 ```{r}
 
 ```
-
-## Task 5 - Reliability
-Calculate the Cronbach's alpha for the scales you have chosen. Do your scales have good reliability?
-
-```{r}
-
-```
-
-

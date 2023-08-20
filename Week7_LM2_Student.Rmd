@@ -1,5 +1,5 @@
 ---
-title: "Week 6 - Multiple Regression 2"
+title: "Week 7 - Multiple Regression 2"
 date: "`r Sys.Date()`"
 output: 
   html_document:
@@ -19,7 +19,8 @@ output:
 # Intro
 
 This week we continue our lessons on multiple regression, 
-including checking assumptions and running regression models with categorical variables.
+including checking assumptions and running regression models 
+with both continuous and categorical variables.
 
 
 # Packages
@@ -45,7 +46,7 @@ library(corrplot)
 ```
 
 # Data
-Let's start by loading a dataset for this week called "week6_dataset.csv".
+Let's start by loading a dataset for this week called "week7_dataset.csv".
 
 ```{r}
 d <- fread("")
@@ -59,7 +60,7 @@ Run a regression model called `m1` predicting Variable1 from Variable2 and Varia
 m1 <- lm(Variable1 ~ Variable2 + Variable3, data = d)
 ```
 
-Refer to week 4 workshop for parametric assumptions. 
+Refer to week 5 workshop for parametric assumptions. 
 We will revisit some assumptions that are specific to linear regression models.
 
 ## Linearity and Homoscedasticity
@@ -98,7 +99,7 @@ plot(m1, 2)
 ```
 
 **Interpreting R Plot**
-Normality of Residuals Assumption is met when the data points observations fall along the diagonal straight line.
+Normality of Residuals Assumption is met when the data points or observations fall along the diagonal straight line.
 
 ## Multicollinearity
 Several ways to check for multicollinearity, including:
@@ -131,7 +132,7 @@ Multicollinearity may be indicated when VIF > 10.
 
 ## Bivariate and Multivariate Outliers
 
-We learnt how to inspect univariate outliers during week 4. 
+We learnt how to inspect univariate outliers during week 5. 
 For multiple regression, we also check for either bivariate or multivariate outliers.
 
 * For bivariate outliers, we can simply use the scatter plot.
@@ -165,7 +166,7 @@ ols_prep_cdplot_data(m1)$ts
 Although the threshold for Cook's D for our data is `r ols_prep_cdplot_data(m1)$ts`, 
 it is mostly used to enhance graphical displays. 
 We may consider a data point as outlier with "values of D that are substantially larger than the rest". 
-In this case, I would be inclined to remove ID 101, possibly 277 and 377 as outliers.
+In this case, I would be inclined to remove ID 150, possibly 25 and 300 as outliers.
 
 **Tips**
 Always check for univariate and either bivarite or multivariate outliers 
@@ -240,7 +241,9 @@ Convert the `BornAUS` variable into a factor. You can keep the name, or give it 
 
 
 ```{r}
-
+class(d$BornAUS)
+d$BornAUS <- as.factor(d$BornAUS)
+class(d$BornAUS)
 ```
 
 ## Create Categorical Variables from Continuous Variables
@@ -271,7 +274,7 @@ table(d$Grade)
 Factors in `R` come in two varieties: ordered (e.g., small, medium, large) 
 and unordered (e.g., rose, daisy, lavender). For dummy variables, it is often helpful to set 
 a reference level or "baseline" value. For example, consider our categorical predictor variable 
-"Sex" with levels "Male" and "Female". If "Male" is our reference, the model outout for regression 
+"Sex" with levels "Male" and "Female". If "Male" is our reference, the model output for regression 
 will give us a coefficient for "Female", which can be interpreted as the difference in the 
 outcome between Female and Male.
 
@@ -317,7 +320,7 @@ In the above output,
 **Sample Write-up for Dummy variables**
 A multiple regression model was used to examine whether Variable2 and Alcohol Risk predict Variable1.
 The results showed that, 
-Abstainer had XXlower Variable1 
+Abstainer had XX lower Variable1 
 than the At Risk group
 [95% CI ], p = .
 The Moderate group also had lower Variable1 than the At Risk group 

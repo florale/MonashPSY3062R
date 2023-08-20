@@ -1,5 +1,5 @@
 ---
-title: "Week 4 - Assumptions"
+title: "Week 5 - Assumptions"
 author: "Your Name"
 date: "`r Sys.Date()`"
 output: 
@@ -34,7 +34,7 @@ First thing first. Open your R project and load the packages.
 library(data.table)
 library(psych)
 library(car)
-library(ggplot2)
+library(ggplot2) # very important for this week - make sure you have installed and loaded
 library(JWileymisc)
 library(extraoperators)
 ```
@@ -51,7 +51,7 @@ d <- fread("")
 
 Scores at least 2 continuous variables you have chosen for your research report.
 If you don't want to score your own variables and would still like to try the code, use the 
-`week4_dataset.csv` file.
+`week5_dataset.csv` file.
 
 ```{r, echo=FALSE}
 

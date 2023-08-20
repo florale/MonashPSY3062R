@@ -1617,7 +1617,7 @@ Positive Affect?</li>
 <div id="data-management" class="section level2" number="3.1">
 <h2><span class="header-section-number">3.1</span> Data management</h2>
 <p>We should make sure our variables have correct data type before
-runningt the analysis.</p>
+running the analysis.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="fu">is.numeric</span>(d<span class="sc">$</span>Age)</span></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="fu">is.numeric</span>(d<span class="sc">$</span>AvgPosAff)</span></code></pre></div>
@@ -1905,7 +1905,7 @@ from the package <code>emmeans</code>.</p>
 <span id="cb22-2"><a href="#cb22-2" tabindex="-1"></a>simple_slope <span class="ot">&lt;-</span> <span class="fu">emtrends</span>(mod2, <span class="at">var =</span> <span class="st">&quot;AvgNegAff&quot;</span>,</span>
 <span id="cb22-3"><a href="#cb22-3" tabindex="-1"></a>                         <span class="at">specs =</span> <span class="sc">~</span> AvgNegAff <span class="sc">|</span> Age,</span>
 <span id="cb22-4"><a href="#cb22-4" tabindex="-1"></a>                         <span class="at">at =</span> <span class="fu">list</span> (<span class="at">Age =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span> , <span class="dv">1</span>)))</span></code></pre></div>
-<p>Summarise our results. We add <code>infer= TRUE</code> argument to
+<p>Summarise our results. We add <code>infer = TRUE</code> argument to
 show p-values.</p>
 <div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" tabindex="-1"></a><span class="fu">summary</span>(simple_slope, <span class="at">infer =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <pre><code>## Age = -1:
@@ -1917,7 +1917,7 @@ show p-values.</p>
 ##   -0.00341          -0.696 0.122 186   -0.937   -0.456  -5.703  &lt;.0001
 ## 
 ## Confidence level used: 0.95</code></pre>
-<p>These results are significant, showing that the there was negative
+<p>These results are significant, showing that the there were negative
 relationships between negative affect and positive affect at both levels
 of age. This also means that the relationships did not depend on age /
 differ between levels of age (they are both negative).</p>

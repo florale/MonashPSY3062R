@@ -1,5 +1,5 @@
 ---
-title: "Week 5 - Multiple Regression 1"
+title: "Week 6 - Multiple Regression 1"
 author: "Your Name"
 date: "`r Sys.Date()`"
 output: html_document
@@ -15,7 +15,7 @@ options(digits = 4)
 
 # Intro
 
-This week we learn how conduct correlation test and multple linear regression in `R`.
+This week we learn how conduct correlation test and multiple linear regression in `R`.
 
 # Packages
 First thing first. Open your R project and load the packages.
@@ -42,7 +42,7 @@ library(olsrr)
 ```
 
 # Data
-Let's start by loading your dataset for *this week tutorial*.
+Let's start by loading your dataset for *week 5 tutorial*.
 
 ```{r}
 d <- fread("")
@@ -81,7 +81,6 @@ or `!=` to select the values that we do not want.
 
 
 ```{r}
-
 ```
 
 # Correlation
@@ -203,7 +202,8 @@ higher inherence bias significantly predicted higher ought,
 b = XX, [95% CI XX, XX],p = XX. 
 This was a small effect,  $f^2$ = 0.11. 
 The overall model explained XX%  
-of the variance in tendency to believe the status quo ought to be within the sample.
+of the variance in tendency to believe the status quo ought to be within the sample
+(F(df regression, df residual) = XX, p = XX). 
 
 ## Plotting relationships
 

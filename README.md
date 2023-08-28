@@ -10,32 +10,35 @@ This GitHub repository stores all the resources for the workshops, including HTM
 - **Week 2** *Getting Started in `R`*.
   Please see [Week2_GetStarted.html](Week2_GetStarted.html).
   
-- **Week 3** *Working with Data and Scoring*.
-  Please see [Week3_WorkDataScoring.html](Week3_WorkDataScoring.html).
-  
-- **Week 4** *Assumptions*.
-  Please see [Week4_Assumptions.html](Week4_Assumptions.html).
+- **Week 3** *Working with Data*.
+  Please see [Week3_WorkData.html](Week3_WorkData.html).
 
-- **Week 5** *Multiple Regression 1*.
-  Please see [Week5_LM1.html](Week5_LM1.html).
+- **Week 4** *Scoring*.
+  Please see [Week4_Scoring.html](Week4_Scoring.html).
   
-- **Week 6** *Multiple Regression 2*.
-  Please see [Week6_LM2.html](Week6_LM2.html).
+- **Week 5** *Assumptions*.
+  Please see [Week5_Assumptions.html](Week5_Assumptions.html).
 
-- **Week 7** *Moderated Regression*.
-  Please see [Week7_LMModeration.html](Week7_LMModeration.html).
+- **Week 6** *Multiple Regression 1*.
+  Please see [Week6_LM1.html](Week6_LM1.html).
   
-- **Week 8** *ANOVA 1*.
-  Please see [Week8_ANOVA1.html](Week8_ANOVA1.html).
+- **Week 7** *Multiple Regression 2*.
+  Please see [Week7_LM2.html](Week7_LM2.html).
+
+- **Week 8** *Moderated Regression*.
+  Please see [Week8_LMModeration.html](Week8_LMModeration.html).
   
-- **Week 9** *ANOVA 2*.
-  Please see [Week9_ANOVA2.html](Week9_ANOVA2.html).
+- **Week 9** *ANOVA 1*.
+  Please see [Week9_ANOVA1.html](Week9_ANOVA1.html).
   
-- **Week 10** *Model Comparison*.
-  Please see [Week10_ModelComparison.html](Week10_ModelComparison.html).
+- **Week 10** *ANOVA 2*.
+  Please see [Week10_ANOVA2.html](Week10_ANOVA2.html).
   
-- **Week 11** *Data Visualisation*.
-  Please see [Week11_DataVisualisation.html](Week11_DataVisualisation.html).
+- **Week 11** *Model Comparison*.
+  Please see [Week11_ModelComparison.html](Week11_ModelComparison.html).
   
-- **Week 12** *General Programming in `R`*.
-  Please see [Week12_Programming.html](Week12_Programming.html).
+- **Week 12** *Data Visualisation*.
+  Please see [Week12_DataVisualisation.html](Week12_DataVisualisation.html).
+  
+- **Otional** *General Programming in `R`*.
+  Please see [Week13_Programming.html](Week13_Programming.html).

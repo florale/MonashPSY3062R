@@ -1,19 +1,8 @@
 ---
-title: "Week 8 - One-way ANOVA"
+title: "Week 9 - One-way ANOVA"
+author: "Your Name"
 date: "`r Sys.Date()`"
-output: 
-  html_document:
-    theme: sandstone
-    highlight: zenburn
-    toc: yes
-    toc_float: yes
-    collapsed: no
-    smooth_scroll: no
-    toc_depth: 4
-    fig_width: 6
-    fig_height: 4
-    fig_caption: yes
-    number_sections: true
+output: html_document
 ---
 # Intro
 
@@ -50,7 +39,7 @@ library(onewaytests)
 # Data
 
 ```{r}
-d <- fread("week6_dataset.csv")
+d <- fread("week7_dataset.csv")
 ```
 
 **Research Questions**

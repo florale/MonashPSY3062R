@@ -35,7 +35,7 @@ d <- d[, .(item1, item2, item3, item4)]
 ## Subset to remove participants with missing data using complete.cases() or !is.na() (Week 2)
 d <- 
   
-# Scoring (Week 2/3) -------------------------------------------------------------------------------
+# Scoring (Week 2/3/4) -------------------------------------------------------------------------------
 ## Replace X with your own data
 ## Your variables should be either total score or average, not both
 ### Predictor 1
@@ -73,7 +73,7 @@ d[, XX_Tscore := T_score[match(XX_Total, Raw_score)]]
 ## Remember to add argument check.keys = TRUE
 
 
-# Assumptions (Week 4 and 6) -----------------------------------------------------------------------
+# Assumptions (Week 5 and 7) -----------------------------------------------------------------------
 ## Normality
 
 ## Linearity
@@ -84,11 +84,11 @@ d[, XX_Tscore := T_score[match(XX_Total, Raw_score)]]
 
 ## Multicollinearity
 
-# Descriptive Stats (Week 5) -----------------------------------------------------------------------
+# Descriptive Stats (Week 6) -----------------------------------------------------------------------
 ## using egltable() 
 
 
-# Main analyses (Week 5 and 6)----------------------------------------------------------------------
+# Main analyses (Week 6-11)----------------------------------------------------------------------
 ## Use lm() for regression or anova() for ANOVA
 
 m <- lm()

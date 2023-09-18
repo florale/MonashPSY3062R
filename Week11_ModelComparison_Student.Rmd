@@ -1,19 +1,8 @@
 ---
-title: "Week 10 - Model Comparison"
+title: "Week 11 - Model Comparison"
+author: "Your Name"
 date: "`r Sys.Date()`"
-output: 
-  html_document:
-    theme: sandstone
-    highlight: zenburn
-    toc: yes
-    toc_float: yes
-    collapsed: no
-    smooth_scroll: no
-    toc_depth: 4
-    fig_width: 6
-    fig_height: 4
-    fig_caption: yes
-    number_sections: true
+output: html_document
 ---
 
 # Intro
@@ -44,7 +33,7 @@ library(dplyr)
 # Data
 
 ```{r}
-d <- fread("week6_dataset.csv")
+d <- fread("week7_dataset.csv")
 ```
 
 # Model Comparison
@@ -95,7 +84,6 @@ to create a new dataset that excludes any missing data on any variable used
 in any of the models  
 (refer to Week 3 for resources related to dealing with missing data).
 
-
 ```{r}
 nobs(ma)
 nobs(mb)
@@ -112,7 +100,7 @@ anova(mb, ma, test = "LRT")
 
 **Interpretation of ANOVA for Model comparison** 
 
-With a *p* value of 0.13, the successive model (**Model A**) was not significant above and beyond 
+With a *p* value of 0.36, the successive model (**Model A**) was not significant above and beyond 
 the previous one (**Model B**). 
 This suggests that the additional predictors did not improve the predictive ability of the overall model.
 
@@ -122,11 +110,11 @@ When models involve different variables, they are not nested.
 For example,
 
 * **Model A** predicts Variable1 from Variable2 and Age.
-* **Model B** predicts Variable1 from Variable2 and Sex.
+* **Model B** predicts Variable1 from Variable2, Variable3, and Sex.
 
 ```{r}
 ma <- lm(Variable1 ~ Variable2 + Age, data = d)
-mb <- lm(Variable1 ~ Variable2 + Sex, data = d)
+mb <- lm(Variable1 ~ Variable2 + Variable3 + Sex, data = d)
 ```
 
 Let's also check the number of observations
@@ -161,6 +149,6 @@ BIC(ma, mb)
 ```
 
 **Interpretation of AIC and BIC** 
-We can see that **Model A** has lower both AIC and BIC, indicating that it is a better fit for the data, 
-compared to **Model B**. We cannot conclude that **Model A** is a "good" model, only that it is better
-than **Model B**.
+We can see that **Model B** has lower both AIC and BIC, indicating that it is a better fit for the data, 
+compared to **Model A**. We cannot conclude that **Model B** is a "good" model, only that it is better
+than **Model A**.

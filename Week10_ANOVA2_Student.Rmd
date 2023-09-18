@@ -1,19 +1,8 @@
 ---
-title: "Week 9 - Factorial ANOVA"
+title: "Week 10 - Factorial ANOVA"
+author: "Your Name"
 date: "`r Sys.Date()`"
-output: 
-  html_document:
-    theme: sandstone
-    highlight: zenburn
-    toc: yes
-    toc_float: yes
-    collapsed: no
-    smooth_scroll: no
-    toc_depth: 4
-    fig_width: 6
-    fig_height: 4
-    fig_caption: yes
-    number_sections: true
+output: html_document
 ---
 # Intro
 
@@ -49,7 +38,7 @@ library(dplyr)
 # Data
 
 ```{r}
-d <- fread("week6_dataset.csv")
+d <- fread("week7_dataset.csv")
 ```
 
 **Research Questions**
@@ -135,7 +124,7 @@ We can treat an interaction ANOVA model just like how we do with moderated regre
 
 **EFFECTS OF THE DAY**
 
-* **Main Effects** The effect of one predictor, ignoring (controlling for) the other predictor.
+* **Main Effects** The effect of one predictor, ignoring (controlling for) the other predictors.
   In this example, it is the mean difference in Variable1 between Alcohol Consumption groups, 
   ignoring whether someone is male or female. In other words, we compare the mean of the three
   Alcohol Consumption groups, averaged across sexes.
@@ -175,7 +164,7 @@ em <- emmeans(m, c("AUDITCat", "Sex"), adjust = "bonferroni")
 We can then obtain our multiple pairwise comparisons by summarising the results. 
 
 ```{r}
-summary(em , infer = TRUE)
+summary(em, infer = TRUE)
 ```
 
 We can get all simple main-effect comparisons using the code below. 

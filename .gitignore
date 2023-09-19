@@ -1,0 +1,13 @@
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+.DS_Store
+
+florastheme.css
+
+MonashPSY3062R.Rproj
+
+SE_scoring.R
+
+secure_scoring.R

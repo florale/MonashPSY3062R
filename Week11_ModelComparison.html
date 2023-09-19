@@ -11,7 +11,7 @@
 
 <meta name="author" content="Flora Le (flora.le@monash.edu)" />
 
-<meta name="date" content="2023-09-10" />
+<meta name="date" content="2023-09-19" />
 
 <title>Week 11 - Model Comparison</title>
 
@@ -1565,7 +1565,7 @@ border-radius: 0px;
 
 <h1 class="title toc-ignore">Week 11 - Model Comparison</h1>
 <h4 class="author">Flora Le (<a href="mailto:flora.le@monash.edu" class="email">flora.le@monash.edu</a>)</h4>
-<h4 class="date">2023-09-10</h4>
+<h4 class="date">2023-09-19</h4>
 
 </div>
 
@@ -1667,7 +1667,7 @@ model.</p>
 ## 2    376 21139  2       116     0.36</code></pre>
 <div class="sky">
 <p><strong>Interpretation of ANOVA for Model comparison</strong></p>
-<p>With a <em>p</em> value of 0.13, the successive model (<strong>Model
+<p>With a <em>p</em> value of 0.36, the successive model (<strong>Model
 A</strong>) was not significant above and beyond the previous one
 (<strong>Model B</strong>). This suggests that the additional predictors
 did not improve the predictive ability of the overall model.</p>
@@ -1682,11 +1682,11 @@ example,</p>
 <ul>
 <li><strong>Model A</strong> predicts Variable1 from Variable2 and
 Age.</li>
-<li><strong>Model B</strong> predicts Variable1 from Variable2 and
-Sex.</li>
+<li><strong>Model B</strong> predicts Variable1 from Variable2,
+Variable3, and Sex.</li>
 </ul>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a>ma <span class="ot">&lt;-</span> <span class="fu">lm</span>(Variable1 <span class="sc">~</span> Variable2 <span class="sc">+</span> Age, <span class="at">data =</span> d)</span>
-<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a>mb <span class="ot">&lt;-</span> <span class="fu">lm</span>(Variable1 <span class="sc">~</span> Variable2 <span class="sc">+</span> Sex, <span class="at">data =</span> d)</span></code></pre></div>
+<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a>mb <span class="ot">&lt;-</span> <span class="fu">lm</span>(Variable1 <span class="sc">~</span> Variable2 <span class="sc">+</span> Variable3 <span class="sc">+</span> Sex, <span class="at">data =</span> d)</span></code></pre></div>
 <p>Let’s also check the number of observations</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="fu">nobs</span>(ma)</span></code></pre></div>
 <pre><code>## [1] 380</code></pre>
@@ -1713,18 +1713,18 @@ less complex model.</p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a><span class="fu">AIC</span>(ma, mb)</span></code></pre></div>
 <pre><code>##    df  AIC
 ## ma  4 2614
-## mb  4 2614</code></pre>
+## mb  5 2581</code></pre>
 <div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a><span class="fu">BIC</span>(ma, mb)</span></code></pre></div>
 <pre><code>##    df  BIC
 ## ma  4 2630
-## mb  4 2630</code></pre>
+## mb  5 2601</code></pre>
 <div class="sky">
 <p><strong>Interpretation of AIC and BIC</strong></p>
-<p>We can see that <strong>Model A</strong> has lower both AIC and BIC,
+<p>We can see that <strong>Model B</strong> has lower both AIC and BIC,
 indicating that it is a better fit for the data, compared to
-<strong>Model B</strong>. We cannot conclude that <strong>Model
-A</strong> is a “good” model, only that it is better than <strong>Model
-B</strong>.</p>
+<strong>Model A</strong>. We cannot conclude that <strong>Model
+B</strong> is a “good” model, only that it is better than <strong>Model
+A</strong>.</p>
 </div>
 </div>
 </div>
